@@ -1,0 +1,22 @@
+services:
+  devcontainer:
+    image: mcr.microsoft.com/devcontainers/java:1-21-bullseye
+    volumes:
+      - ../../:/workspaces:cached
+    networks:
+      - jacalnet
+    command: sleep infinity
+
+  db:
+    image: mysql:8
+    volumes:
+      - "./../.docker/db/data:/var/lib/mysql"
+    ports:
+      - "3306:3306"
+    networks:
+      - jacalnet
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+
+networks:
+  jacalnet:

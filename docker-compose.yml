@@ -1,0 +1,14 @@
+services:
+  db:
+    image: mysql:8
+    volumes:
+      - "./.docker/db/data:/var/lib/mysql"
+    ports:
+      - "3306:3306"
+    networks:
+      - jacalnet
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+
+networks:
+  jacalnet:
