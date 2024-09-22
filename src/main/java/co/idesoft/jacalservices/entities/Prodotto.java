@@ -1,5 +1,6 @@
 package co.idesoft.jacalservices.entities;
 
+import co.idesoft.jacalservices.controllers.dto.CreareProdottoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,4 +21,13 @@ public class Prodotto {
     private String nome;
 
     private String descrizione;
+
+    public static Prodotto from(CreareProdottoDto request) {
+        Prodotto prodotto = new Prodotto();
+
+        prodotto.setNome(request.nome());
+        prodotto.setDescrizione(request.descrizione());
+
+        return prodotto;
+    }
 }
