@@ -16,6 +16,7 @@ import co.idesoft.jacalservices.controllers.dto.ProdottoCreatoDto;
 import co.idesoft.jacalservices.controllers.dto.ProdottoDto;
 import co.idesoft.jacalservices.entities.Prodotto;
 import co.idesoft.jacalservices.repositories.ProdottoRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -38,7 +39,7 @@ public class ProdottoController {
     }
 
     @PostMapping
-    public ResponseEntity<ProdottoCreatoDto> creareProdotto(@RequestBody CreareProdottoDto request) {
+    public ResponseEntity<ProdottoCreatoDto> creareProdotto(@Valid @RequestBody CreareProdottoDto request) {
         log.info("creando un nuovo prodotto con request: {}", request);
 
         Prodotto prodotto = new Prodotto();
