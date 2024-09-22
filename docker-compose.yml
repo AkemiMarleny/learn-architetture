@@ -8,7 +8,8 @@ services:
     networks:
       - jacalnet
     environment:
-      MYSQL_ROOT_PASSWORD: "root"
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=jacal_db
 
 networks:
   jacalnet:
