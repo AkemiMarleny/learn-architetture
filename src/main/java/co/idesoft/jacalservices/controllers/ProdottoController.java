@@ -1,11 +1,12 @@
 package co.idesoft.jacalservices.controllers;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,13 +34,16 @@ public class ProdottoController {
     private final ProdottoRepository prodottoRepository;
 
     @GetMapping
-    public ResponseEntity<List<ProdottoItemDto>> getAllProdotti() {
-        List<ProdottoItemDto> prodotti = prodottoRepository.findAll()
-                .stream()
-                .map(ProdottoItemDto::fromEntity)
-                .collect(Collectors.toList());
+    public ResponseEntity<Page<ProdottoItemDto>> getAllProdotti(Pageable pageable) {
+        // List<ProdottoItemDto> prodotti = prodottoRepository.findAll()
+        // .stream()
+        // .map(ProdottoItemDto::fromEntity)
+        // .collect(Collectors.toList());
 
-        return ResponseEntity.ok(prodotti);
+        Page<ProdottoItemDto> prodottiPage = prodottoRepository.findAll(pageable)
+                .map(ProdottoItemDto::fromEntity);
+
+        return ResponseEntity.ok(prodottiPage);
     }
 
     @PostMapping
@@ -68,6 +72,13 @@ public class ProdottoController {
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @DeleteMapping("{prodottoId}")
+    public ResponseEntity<Void> cancellaProdotto(@PathVariable Long prodottoId) {
+        log.info("cancellando il prodotto con id: {}", prodottoId);
+        this.prodottoRepository.deleteById(prodottoId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
