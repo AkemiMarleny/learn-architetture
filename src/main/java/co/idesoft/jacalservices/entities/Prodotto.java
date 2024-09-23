@@ -1,5 +1,6 @@
 package co.idesoft.jacalservices.entities;
 
+import co.idesoft.jacalservices.controllers.dto.AggiornareProdottoDto;
 import co.idesoft.jacalservices.controllers.dto.CreareProdottoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,5 +30,10 @@ public class Prodotto {
         prodotto.setDescrizione(request.descrizione());
 
         return prodotto;
+    }
+
+    public void aggiornaCon(AggiornareProdottoDto request) {
+        this.nome = request.nome();
+        this.descrizione = request.descrizione();
     }
 }

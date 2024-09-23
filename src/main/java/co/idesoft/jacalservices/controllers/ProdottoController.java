@@ -1,19 +1,23 @@
 package co.idesoft.jacalservices.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.idesoft.jacalservices.controllers.dto.AggiornareProdottoDto;
 import co.idesoft.jacalservices.controllers.dto.CreareProdottoDto;
 import co.idesoft.jacalservices.controllers.dto.ProdottoCreatoDto;
-import co.idesoft.jacalservices.controllers.dto.ProdottoDto;
+import co.idesoft.jacalservices.controllers.dto.ProdottoItemDto;
 import co.idesoft.jacalservices.entities.Prodotto;
 import co.idesoft.jacalservices.repositories.ProdottoRepository;
 import jakarta.validation.Valid;
@@ -29,10 +33,10 @@ public class ProdottoController {
     private final ProdottoRepository prodottoRepository;
 
     @GetMapping
-    public ResponseEntity<List<ProdottoDto>> getAllProdotti() {
-        List<ProdottoDto> prodotti = prodottoRepository.findAll()
+    public ResponseEntity<List<ProdottoItemDto>> getAllProdotti() {
+        List<ProdottoItemDto> prodotti = prodottoRepository.findAll()
                 .stream()
-                .map(ProdottoDto::fromEntity)
+                .map(ProdottoItemDto::fromEntity)
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(prodotti);
@@ -46,6 +50,24 @@ public class ProdottoController {
                 .getProdottoId();
 
         return new ResponseEntity<>(new ProdottoCreatoDto(prodottoId), HttpStatus.CREATED);
+    }
+
+    @PutMapping("{prodottoId}")
+    public ResponseEntity<Void> updateProdotto(@PathVariable Long prodottoId,
+            @RequestBody AggiornareProdottoDto request) {
+        log.info("aggiornando il prodotto con id: {}", prodottoId);
+        Optional<Prodotto> prodotto = this.prodottoRepository.findById(prodottoId);
+
+        if (prodotto.isPresent()) {
+            Prodotto prodottoAModificare = prodotto.get();
+            prodottoAModificare.aggiornaCon(request);
+
+            this.prodottoRepository.save(prodottoAModificare);
+
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }
