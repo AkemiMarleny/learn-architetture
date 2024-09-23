@@ -1,4 +1,4 @@
-package co.idesoft.jacalservices.controllers.dto;
+package co.idesoft.jacalservices.prodotto.mvc.controllers.dto;
 
 public record AggiornareProdottoDto(
         Long id,

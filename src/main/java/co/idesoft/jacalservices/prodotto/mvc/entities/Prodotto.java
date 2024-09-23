@@ -1,7 +1,7 @@
-package co.idesoft.jacalservices.entities;
+package co.idesoft.jacalservices.prodotto.mvc.entities;
 
-import co.idesoft.jacalservices.controllers.dto.AggiornareProdottoDto;
-import co.idesoft.jacalservices.controllers.dto.CreareProdottoDto;
+import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.AggiornareProdottoDto;
+import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.CreareProdottoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

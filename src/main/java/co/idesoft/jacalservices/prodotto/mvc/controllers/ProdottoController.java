@@ -1,4 +1,4 @@
-package co.idesoft.jacalservices.controllers;
+package co.idesoft.jacalservices.prodotto.mvc.controllers;
 
 import java.util.Optional;
 
@@ -15,12 +15,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.idesoft.jacalservices.controllers.dto.AggiornareProdottoDto;
-import co.idesoft.jacalservices.controllers.dto.CreareProdottoDto;
-import co.idesoft.jacalservices.controllers.dto.ProdottoCreatoDto;
-import co.idesoft.jacalservices.controllers.dto.ProdottoItemDto;
-import co.idesoft.jacalservices.entities.Prodotto;
-import co.idesoft.jacalservices.repositories.ProdottoRepository;
+import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.AggiornareProdottoDto;
+import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.CreareProdottoDto;
+import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.ProdottoCreatoDto;
+import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.ProdottoItemDto;
+import co.idesoft.jacalservices.prodotto.mvc.entities.Prodotto;
+import co.idesoft.jacalservices.prodotto.mvc.repositories.ProdottoRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

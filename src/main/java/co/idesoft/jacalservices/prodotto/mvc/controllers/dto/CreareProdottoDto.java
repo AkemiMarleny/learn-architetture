@@ -1,4 +1,4 @@
-package co.idesoft.jacalservices.controllers.dto;
+package co.idesoft.jacalservices.prodotto.mvc.controllers.dto;
 
 import org.hibernate.validator.constraints.Length;
 

@@ -1,6 +1,6 @@
-package co.idesoft.jacalservices.controllers.dto;
+package co.idesoft.jacalservices.prodotto.mvc.controllers.dto;
 
-import co.idesoft.jacalservices.entities.Prodotto;
+import co.idesoft.jacalservices.prodotto.mvc.entities.Prodotto;
 
 public record ProdottoItemDto(
         Long prodottoId,
