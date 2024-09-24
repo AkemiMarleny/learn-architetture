@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.AggiornareProdottoDto;
 import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.CreareProdottoDto;
 import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.ProdottoCreatoDto;
+import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.ProdottoDettaglioDto;
 import co.idesoft.jacalservices.prodotto.mvc.controllers.dto.ProdottoItemDto;
 import co.idesoft.jacalservices.prodotto.mvc.entities.Prodotto;
 import co.idesoft.jacalservices.prodotto.mvc.repositories.ProdottoRepository;
@@ -56,17 +57,29 @@ public class ProdottoController {
         return new ResponseEntity<>(new ProdottoCreatoDto(prodottoId), HttpStatus.CREATED);
     }
 
+    @GetMapping("{prodottoId}")
+    public ResponseEntity<ProdottoDettaglioDto> getDettaglioProdotto(@PathVariable Long prodottoId) {
+        Optional<Prodotto> prodotto = prodottoRepository.findById(prodottoId);
+
+        if (prodotto.isPresent()) {
+            ProdottoDettaglioDto prodottoDettaglioDto = ProdottoDettaglioDto.fromEntity(prodotto.get());
+
+            return new ResponseEntity<>(prodottoDettaglioDto, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
     @PutMapping("{prodottoId}")
     public ResponseEntity<Void> updateProdotto(@PathVariable Long prodottoId,
             @RequestBody AggiornareProdottoDto request) {
         log.info("aggiornando il prodotto con id: {}", prodottoId);
-        Optional<Prodotto> prodotto = this.prodottoRepository.findById(prodottoId);
+        Optional<Prodotto> prodotto = prodottoRepository.findById(prodottoId);
 
         if (prodotto.isPresent()) {
             Prodotto prodottoAModificare = prodotto.get();
             prodottoAModificare.aggiornaCon(request);
 
-            this.prodottoRepository.save(prodottoAModificare);
+            prodottoRepository.save(prodottoAModificare);
 
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
@@ -77,7 +90,7 @@ public class ProdottoController {
     @DeleteMapping("{prodottoId}")
     public ResponseEntity<Void> cancellaProdotto(@PathVariable Long prodottoId) {
         log.info("cancellando il prodotto con id: {}", prodottoId);
-        this.prodottoRepository.deleteById(prodottoId);
+        prodottoRepository.deleteById(prodottoId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
