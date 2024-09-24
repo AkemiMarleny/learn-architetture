@@ -1,5 +1,7 @@
 package co.idesoft.jacalservices.prodotto.mvcservices.controllers;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -16,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareMagazzinoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareMagazzinoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.MagazzinoCreatoDto;
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.MagazzinoDettaglioDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.MagazzinoItemDto;
+import co.idesoft.jacalservices.prodotto.mvcservices.entities.Magazzino;
 import co.idesoft.jacalservices.prodotto.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.jacalservices.prodotto.mvcservices.services.MagazzinoService;
 import lombok.RequiredArgsConstructor;
@@ -43,6 +47,17 @@ public class MagazzinoController {
         Long magazzinoId = magazzinoService.save(request);
 
         return new ResponseEntity<>(new MagazzinoCreatoDto(magazzinoId), HttpStatus.CREATED);
+    }
+
+    @GetMapping("{magazzinoId}")
+    public ResponseEntity<MagazzinoDettaglioDto> getDettaglioMagazzino(@PathVariable Long magazzinoId) {
+        Optional<Magazzino> magazzino = magazzinoService.findDettaglio(magazzinoId);
+        if (magazzino.isPresent()) {
+            MagazzinoDettaglioDto magazzinoDettaglioDto = MagazzinoDettaglioDto.fromEntity(magazzino.get());
+
+            return new ResponseEntity<>(magazzinoDettaglioDto, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("{magazzinoId}")

@@ -1,5 +1,7 @@
 package co.idesoft.jacalservices.prodotto.mvcservices.services;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,6 +26,10 @@ public class MagazzinoService {
 
     public Long save(@Valid CreareMagazzinoDto payload) {
         return magazzinoRepository.save(Magazzino.from(payload)).getMagazzinoId();
+    }
+
+    public Optional<Magazzino> findDettaglio(Long magazzinoId) {
+        return magazzinoRepository.findById(magazzinoId);
     }
 
     public void update(Long magazzinoId, @Valid AggiornareMagazzinoDto payload) throws RecordNotFoundException {
