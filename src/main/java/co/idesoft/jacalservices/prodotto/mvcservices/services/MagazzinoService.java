@@ -34,4 +34,8 @@ public class MagazzinoService {
 
         magazzinoRepository.save(magazzino);
     }
+
+    public void cancella(Long magazzinoId) {
+        magazzinoRepository.deleteById(magazzinoId);
+    }
 }
