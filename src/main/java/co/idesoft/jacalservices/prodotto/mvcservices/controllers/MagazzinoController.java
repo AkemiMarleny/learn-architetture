@@ -27,7 +27,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("api/v2/magazzini")
+@RequestMapping("api/magazzini")
 @RequiredArgsConstructor
 @Slf4j
 public class MagazzinoController {
