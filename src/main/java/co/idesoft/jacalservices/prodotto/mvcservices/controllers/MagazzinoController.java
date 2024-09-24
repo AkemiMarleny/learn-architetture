@@ -16,6 +16,7 @@ import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareM
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareMagazzinoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.MagazzinoCreatoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.MagazzinoItemDto;
+import co.idesoft.jacalservices.prodotto.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.jacalservices.prodotto.mvcservices.services.MagazzinoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +47,11 @@ public class MagazzinoController {
     @PutMapping("{magazzinoId}")
     public ResponseEntity<Void> updateMagazzino(@PathVariable Long magazzinoId,
             @RequestBody AggiornareMagazzinoDto request) {
-        magazzinoService.update(magazzinoId, request);
+        try {
+            magazzinoService.update(magazzinoId, request);
+        } catch (RecordNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
