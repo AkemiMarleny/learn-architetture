@@ -41,4 +41,8 @@ public class CategoriaService {
 
         categoriaRepository.save(categoria);
     }
+
+    public void cancella(Long categoriaId) {
+        categoriaRepository.deleteById(categoriaId);
+    }
 }
