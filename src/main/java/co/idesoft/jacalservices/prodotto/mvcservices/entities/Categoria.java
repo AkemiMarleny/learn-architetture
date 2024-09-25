@@ -1,5 +1,6 @@
 package co.idesoft.jacalservices.prodotto.mvcservices.entities;
 
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareCategoriaDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareCategoriaDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,5 +30,10 @@ public class Categoria {
         categoria.setDescrizione(request.descrizione());
 
         return categoria;
+    }
+
+    public void aggiornaCon(AggiornareCategoriaDto request) {
+        this.nome = request.nome();
+        this.descrizione = request.descrizione();
     }
 }

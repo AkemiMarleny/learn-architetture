@@ -7,10 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareCategoriaDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CategoriaCreatoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CategoriaDettaglioDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CategoriaItemDto;
@@ -55,6 +57,17 @@ public class CategorieController {
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PutMapping("{categoriaId}")
+    public ResponseEntity<Void> updateCategoria(@PathVariable Long categoriaId,
+            @RequestBody AggiornareCategoriaDto request) {
+        try {
+            categoriaService.update(categoriaId, request);
+        } catch (RecordNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
