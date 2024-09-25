@@ -5,14 +5,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CategoriaCreatoDto;
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CategoriaDettaglioDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CategoriaItemDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareCategoriaDto;
+import co.idesoft.jacalservices.prodotto.mvcservices.entities.Categoria;
+import co.idesoft.jacalservices.prodotto.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.jacalservices.prodotto.mvcservices.services.CategoriaService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,4 +43,18 @@ public class CategorieController {
                 .map(CategoriaItemDto::fromEntity);
         return ResponseEntity.ok(categoriePage);
     }
+
+    @GetMapping("{categoriaId}")
+    public ResponseEntity<CategoriaDettaglioDto> getDettaglioCategoria(@PathVariable Long categoriaId) {
+
+        try {
+            Categoria categoriaEnt = categoriaService.findDettaglio(categoriaId);
+            CategoriaDettaglioDto categoriaDettaglioDto = CategoriaDettaglioDto.fromEntity(categoriaEnt);
+            return new ResponseEntity<>(categoriaDettaglioDto, HttpStatus.OK);
+        } catch (RecordNotFoundException e) {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
 }

@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareCategoriaDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.entities.Categoria;
+import co.idesoft.jacalservices.prodotto.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.jacalservices.prodotto.mvcservices.repositories.CategoriaRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,11 @@ public class CategoriaService {
 
     public Page<Categoria> findAll(Pageable pageable) {
         return categoriaRepository.findAll(pageable);
+    }
+
+    public Categoria findDettaglio(Long categoriaId) throws RecordNotFoundException {
+        return categoriaRepository.findById(categoriaId)
+                .orElseThrow(RecordNotFoundException::new);
+
     }
 }
