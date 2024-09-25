@@ -7,10 +7,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareCassaDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CassaCreatoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CassaDettaglioDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CassaItemDto;
@@ -54,6 +56,18 @@ public class CassaController {
 
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+    }
+
+    @PutMapping("{cassaId}")
+    public ResponseEntity<Void> updateCassa(@PathVariable Long cassaId,
+            @RequestBody AggiornareCassaDto request) {
+        try {
+            cassaService.update(cassaId, request);
+        } catch (RecordNotFoundException e) {
+
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }

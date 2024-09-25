@@ -1,5 +1,6 @@
 package co.idesoft.jacalservices.prodotto.mvcservices.entities;
 
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareCassaDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareCassaDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -29,6 +30,11 @@ public class Cassa {
         cassa.setDescrizione(request.descrizione());
 
         return cassa;
+    }
+
+    public void aggiornaCon(AggiornareCassaDto request) {
+        this.nome = request.nome();
+        this.descrizione = request.descrizione();
     }
 
 }

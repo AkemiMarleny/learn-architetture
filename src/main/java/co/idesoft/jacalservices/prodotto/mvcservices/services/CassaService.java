@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareCassaDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareCassaDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.entities.Cassa;
 import co.idesoft.jacalservices.prodotto.mvcservices.exceptions.RecordNotFoundException;
@@ -29,5 +30,14 @@ public class CassaService {
 
     public Cassa findDettaglio(Long cassaId) throws RecordNotFoundException {
         return cassaRepository.findById(cassaId).orElseThrow(RecordNotFoundException::new);
+    }
+
+    public void update(Long cassaId, @Valid AggiornareCassaDto payload) throws RecordNotFoundException {
+        Cassa cassa = cassaRepository.findById(cassaId)
+                .orElseThrow(RecordNotFoundException::new);
+
+        cassa.aggiornaCon(payload);
+
+        cassaRepository.save(cassa);
     }
 }
