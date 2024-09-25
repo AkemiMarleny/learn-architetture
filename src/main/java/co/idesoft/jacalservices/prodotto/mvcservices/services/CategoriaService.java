@@ -1,6 +1,9 @@
 package co.idesoft.jacalservices.prodotto.mvcservices.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareCategoriaDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.entities.Categoria;
@@ -10,11 +13,16 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
+@Validated
 public class CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
 
     public Long save(@Valid CreareCategoriaDto payload) {
         return categoriaRepository.save(Categoria.from(payload)).getCategoriaId();
+    }
+
+    public Page<Categoria> findAll(Pageable pageable) {
+        return categoriaRepository.findAll(pageable);
     }
 }
