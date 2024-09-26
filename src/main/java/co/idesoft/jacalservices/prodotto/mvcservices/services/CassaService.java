@@ -40,4 +40,8 @@ public class CassaService {
 
         cassaRepository.save(cassa);
     }
+
+    public void cancella(Long cassaId) {
+        cassaRepository.deleteById(cassaId);
+    }
 }
