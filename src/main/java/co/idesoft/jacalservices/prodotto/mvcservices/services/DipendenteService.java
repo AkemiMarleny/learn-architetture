@@ -1,5 +1,7 @@
 package co.idesoft.jacalservices.prodotto.mvcservices.services;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -18,5 +20,9 @@ public class DipendenteService {
 
     public Long save(@Valid CreareDipendenteDto payload) {
         return dipendenteRepository.save(Dipendente.from(payload)).getDipendenteId();
+    }
+
+    public Page<Dipendente> findAll(Pageable pageable) {
+        return dipendenteRepository.findAll(pageable);
     }
 }
