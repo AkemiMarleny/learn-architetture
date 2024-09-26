@@ -1,0 +1,22 @@
+package co.idesoft.jacalservices.prodotto.mvcservices.services;
+
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareDipendenteDto;
+import co.idesoft.jacalservices.prodotto.mvcservices.entities.Dipendente;
+import co.idesoft.jacalservices.prodotto.mvcservices.repositories.DipendenteRepository;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+@Validated
+public class DipendenteService {
+
+    private final DipendenteRepository dipendenteRepository;
+
+    public Long save(@Valid CreareDipendenteDto payload) {
+        return dipendenteRepository.save(Dipendente.from(payload)).getDipendenteId();
+    }
+}
