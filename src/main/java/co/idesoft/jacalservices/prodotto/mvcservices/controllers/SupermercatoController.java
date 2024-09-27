@@ -1,7 +1,10 @@
 package co.idesoft.jacalservices.prodotto.mvcservices.controllers;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareSupermercatoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.SupermercatoCreatoDto;
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.SupermercatoItemDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.services.SupermercatoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +30,14 @@ public class SupermercatoController {
         log.info("creando un nuovo supermercato con request: {}, request");
         Long supermercatoId = supermercatoService.save(request);
         return new ResponseEntity<>(new SupermercatoCreatoDto(supermercatoId), HttpStatus.CREATED);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<SupermercatoItemDto>> getAllSupermercati(Pageable pageable) {
+        Page<SupermercatoItemDto> supermercatiPage = supermercatoService.findAll(pageable)
+                .map(SupermercatoItemDto::fromEntity);
+
+        return ResponseEntity.ok(supermercatiPage);
     }
 
 }
