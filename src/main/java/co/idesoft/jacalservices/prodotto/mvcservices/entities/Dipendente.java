@@ -1,5 +1,6 @@
 package co.idesoft.jacalservices.prodotto.mvcservices.entities;
 
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareDipendenteDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareDipendenteDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,5 +28,10 @@ public class Dipendente {
         dipendente.setNome(request.nome());
         dipendente.setDescrizione(request.descrizione());
         return dipendente;
+    }
+
+    public void aggiornaCon(AggiornareDipendenteDto request) {
+        this.nome = request.nome();
+        this.descrizione = request.descrizione();
     }
 }

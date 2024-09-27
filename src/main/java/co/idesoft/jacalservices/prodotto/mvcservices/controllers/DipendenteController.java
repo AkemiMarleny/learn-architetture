@@ -5,14 +5,20 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareDipendenteDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareDipendenteDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.DipendenteCreatoDto;
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.DipendenteDettaglioDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.DipendenteItemDto;
+import co.idesoft.jacalservices.prodotto.mvcservices.entities.Dipendente;
+import co.idesoft.jacalservices.prodotto.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.jacalservices.prodotto.mvcservices.services.DipendenteService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +44,28 @@ public class DipendenteController {
                 .map(DipendenteItemDto::fromEntity);
 
         return ResponseEntity.ok(dipendentiPage);
+    }
+
+    @GetMapping("{dipendentiId}")
+    public ResponseEntity<DipendenteDettaglioDto> getDettaglioDipendente(@PathVariable Long dipendentiId) {
+        try {
+            Dipendente dipendenteEnt = dipendenteService.findDettaglio(dipendentiId);
+            DipendenteDettaglioDto dipendenteDettaglioDto = DipendenteDettaglioDto.fromEntity(dipendenteEnt);
+            return new ResponseEntity<>(dipendenteDettaglioDto, HttpStatus.OK);
+        } catch (RecordNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PutMapping("{dipendentiId}")
+    public ResponseEntity<Void> updateDipendente(@PathVariable Long dipendentiId,
+            @RequestBody AggiornareDipendenteDto request) {
+        try {
+            dipendenteService.update(dipendentiId, request);
+        } catch (RecordNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
