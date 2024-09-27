@@ -41,4 +41,8 @@ public class DipendenteService {
 
         dipendenteRepository.save(dipendente);
     }
+
+    public void cancella(Long dipendentiId) {
+        dipendenteRepository.deleteById(dipendentiId);
+    }
 }
