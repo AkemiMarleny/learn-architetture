@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareSupermercatoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.entities.Supermercato;
+import co.idesoft.jacalservices.prodotto.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.jacalservices.prodotto.mvcservices.repositories.SupermercatoRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,6 +25,11 @@ public class SupermercatoService {
 
     public Page<Supermercato> findAll(Pageable pageable) {
         return supermercatoRepository.findAll(pageable);
+    }
+
+    public Supermercato findDettaglio(Long supermercatoId) throws RecordNotFoundException {
+        return supermercatoRepository.findById(supermercatoId)
+                .orElseThrow(RecordNotFoundException::new);
     }
 
 }
