@@ -1,5 +1,6 @@
 package co.idesoft.jacalservices.prodotto.mvcservices.entities;
 
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareSupermercatoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareSupermercatoDto;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,11 @@ public class Supermercato {
         supermercato.setNome(request.nome());
         supermercato.setDescrizione(request.descrizione());
         return supermercato;
+    }
+
+    public void aggiornaCon(AggiornareSupermercatoDto request) {
+        this.nome = request.nome();
+        this.descrizione = request.descrizione();
     }
 
 }

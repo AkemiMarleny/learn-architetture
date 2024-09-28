@@ -5,6 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.AggiornareSupermercatoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.controllers.dto.CreareSupermercatoDto;
 import co.idesoft.jacalservices.prodotto.mvcservices.entities.Supermercato;
 import co.idesoft.jacalservices.prodotto.mvcservices.exceptions.RecordNotFoundException;
@@ -30,6 +31,19 @@ public class SupermercatoService {
     public Supermercato findDettaglio(Long supermercatoId) throws RecordNotFoundException {
         return supermercatoRepository.findById(supermercatoId)
                 .orElseThrow(RecordNotFoundException::new);
+    }
+
+    public void update(Long supermercatoId, @Valid AggiornareSupermercatoDto payload) throws RecordNotFoundException {
+        Supermercato supermercato = supermercatoRepository.findById(supermercatoId)
+                .orElseThrow(RecordNotFoundException::new);
+
+        supermercato.aggiornaCon(payload);
+
+        supermercatoRepository.save(supermercato);
+    }
+
+    public void cancella(Long supermercatoId) {
+        supermercatoRepository.deleteById(supermercatoId);
     }
 
 }
