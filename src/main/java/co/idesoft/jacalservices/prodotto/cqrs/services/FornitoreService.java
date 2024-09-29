@@ -30,4 +30,8 @@ public class FornitoreService {
 
             fornitoreRepository.save(fornitore);
     }
+
+    public void cancella(Long fornitoreId){
+        fornitoreRepository.deleteById(fornitoreId);
+    }
 }

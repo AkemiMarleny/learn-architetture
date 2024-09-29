@@ -2,6 +2,7 @@ package co.idesoft.jacalservices.prodotto.cqrs.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -47,4 +48,10 @@ public class FornitoreWriterController {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     } 
+
+    @DeleteMapping("{fornitoreId}")
+    public ResponseEntity<Void> cancellaFornitore(@PathVariable Long fornitoreId){
+        fornitoreService.cancella(fornitoreId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
