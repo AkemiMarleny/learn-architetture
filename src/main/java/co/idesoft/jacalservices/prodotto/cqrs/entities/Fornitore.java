@@ -1,5 +1,6 @@
 package co.idesoft.jacalservices.prodotto.cqrs.entities;
 
+import co.idesoft.jacalservices.prodotto.cqrs.commands.AggiornareFornitoreCommand;
 import co.idesoft.jacalservices.prodotto.cqrs.commands.CreareFornitoreCommand;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,5 +29,10 @@ public class Fornitore {
         fornitore.setDescrizione(command.descrizione());
 
         return fornitore;
+    }
+
+    public void aggiornaCon(AggiornareFornitoreCommand command){
+        this.nome = command.nome();
+        this.descrizione = command.descrizione();
     }
 }
