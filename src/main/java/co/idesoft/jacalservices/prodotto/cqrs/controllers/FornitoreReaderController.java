@@ -2,6 +2,8 @@ package co.idesoft.jacalservices.prodotto.cqrs.controllers;
 
 import java.util.Optional;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.idesoft.jacalservices.prodotto.cqrs.dtos.FornitoreDettaglioDto;
+import co.idesoft.jacalservices.prodotto.cqrs.dtos.FornitoreItemDto;
 import co.idesoft.jacalservices.prodotto.cqrs.entities.Fornitore;
 import co.idesoft.jacalservices.prodotto.cqrs.repositories.FornitoreRepository;
 import lombok.RequiredArgsConstructor;
@@ -30,5 +33,12 @@ public class FornitoreReaderController {
         }
 
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<FornitoreItemDto>> getAllFornitore(Pageable pageable){
+        Page<FornitoreItemDto> fornitoriPage = fornitoreRepository.findAll(pageable)
+            .map(FornitoreItemDto::fromEntity);
+        return ResponseEntity.ok(fornitoriPage);
     }
 }
