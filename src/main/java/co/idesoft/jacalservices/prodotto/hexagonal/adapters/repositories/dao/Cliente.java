@@ -22,6 +22,7 @@ public class Cliente {
 
     public static Cliente from(SalvareCliente salvareCliente) {
         Cliente cliente = new Cliente();
+        
         cliente.setNome(salvareCliente.nome());
         cliente.setDescrizione(salvareCliente.descrizione());
         
