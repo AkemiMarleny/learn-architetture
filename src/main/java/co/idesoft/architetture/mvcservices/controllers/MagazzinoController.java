@@ -21,6 +21,7 @@ import co.idesoft.architetture.mvcservices.controllers.dto.MagazzinoCreatoDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.MagazzinoDettaglioDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.MagazzinoItemDto;
 import co.idesoft.architetture.mvcservices.entities.Magazzino;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.services.MagazzinoService;
 import lombok.RequiredArgsConstructor;
@@ -44,9 +45,14 @@ public class MagazzinoController {
     @PostMapping
     public ResponseEntity<MagazzinoCreatoDto> creareMagazzino(@RequestBody CreareMagazzinoDto request) {
         log.info("creando un nuovo magazzino con request: {}", request);
-        Long magazzinoId = magazzinoService.save(request);
+       
+        try {
+           Long magazzinoId = magazzinoService.save(request);
+           return new ResponseEntity<>(new MagazzinoCreatoDto(magazzinoId), HttpStatus.CREATED);
+        } catch (ConflictException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
 
-        return new ResponseEntity<>(new MagazzinoCreatoDto(magazzinoId), HttpStatus.CREATED);
     }
 
     @GetMapping("{magazzinoId}")

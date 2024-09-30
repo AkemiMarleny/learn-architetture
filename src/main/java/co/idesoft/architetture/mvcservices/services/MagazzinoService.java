@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareMagazzinoDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareMagazzinoDto;
 import co.idesoft.architetture.mvcservices.entities.Magazzino;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.repositories.MagazzinoRepository;
 import jakarta.validation.Valid;
@@ -26,7 +27,15 @@ public class MagazzinoService {
         return magazzinoRepository.findAll(pageable);
     }
 
-    public Long save(@Valid CreareMagazzinoDto payload) {
+    public Long save(@Valid CreareMagazzinoDto payload) throws ConflictException {
+        Magazzino magazzino = Magazzino.from(payload);
+
+        Long magazziniContatore = magazzinoRepository.countByChecksum(magazzino.getChecksum());
+
+        if (magazziniContatore > 0) {
+            throw new ConflictException();
+        }
+
         return magazzinoRepository.save(Magazzino.from(payload)).getMagazzinoId();
     }
 

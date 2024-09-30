@@ -6,4 +6,5 @@ import co.idesoft.architetture.mvcservices.entities.Magazzino;
 
 public interface MagazzinoRepository extends JpaRepository<Magazzino, Long> {
 
+    Long countByChecksum(String checksum);
 }
