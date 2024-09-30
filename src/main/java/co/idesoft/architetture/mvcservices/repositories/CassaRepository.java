@@ -6,4 +6,6 @@ import co.idesoft.architetture.mvcservices.entities.Cassa;
 
 public interface CassaRepository extends JpaRepository<Cassa, Long> {
 
+    Long countByChecksum(String checksum);
+
 }

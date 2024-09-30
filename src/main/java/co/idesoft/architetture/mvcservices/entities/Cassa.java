@@ -1,7 +1,9 @@
 package co.idesoft.architetture.mvcservices.entities;
 
+import co.idesoft.architetture.common.Sum;
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareCassaDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareCassaDto;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,11 +25,15 @@ public class Cassa {
 
     private String descrizione;
 
+    @Column(length = 50)
+    private String checksum;
+
     public static Cassa from(CreareCassaDto request) {
         Cassa cassa = new Cassa();
 
         cassa.setNome(request.nome());
         cassa.setDescrizione(request.descrizione());
+        cassa.setChecksum(Sum.fromContent(request.nome().trim().toLowerCase()));
 
         return cassa;
     }

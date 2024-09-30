@@ -19,6 +19,7 @@ import co.idesoft.architetture.mvcservices.controllers.dto.CassaDettaglioDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CassaItemDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareCassaDto;
 import co.idesoft.architetture.mvcservices.entities.Cassa;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.services.CassaService;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +34,15 @@ public class CassaController {
     private final CassaService cassaService;
 
     @PostMapping
-    public ResponseEntity<CassaCreatoDto> creareCassa(@RequestBody CreareCassaDto request) {
+    public ResponseEntity<CassaCreatoDto> creareCassa(@RequestBody CreareCassaDto request)  {
         log.info("creando una nuova cassa con request: {}, request");
-        Long cassaId = cassaService.save(request);
-        return new ResponseEntity<>(new CassaCreatoDto(cassaId), HttpStatus.CREATED);
+       
+        try {
+           Long cassaId = cassaService.save(request);
+           return new ResponseEntity<>(new CassaCreatoDto(cassaId), HttpStatus.CREATED);
+        } catch (ConflictException e) {
+         return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping

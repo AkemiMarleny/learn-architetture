@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareCassaDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareCassaDto;
 import co.idesoft.architetture.mvcservices.entities.Cassa;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.repositories.CassaRepository;
 import jakarta.validation.Valid;
@@ -20,7 +21,15 @@ public class CassaService {
 
     private final CassaRepository cassaRepository;
 
-    public Long save(@Valid CreareCassaDto payload) {
+    public Long save(@Valid CreareCassaDto payload) throws ConflictException {
+        Cassa cassa = Cassa.from(payload);
+        
+        Long casseContatore = cassaRepository.countByChecksum(cassa.getChecksum());
+
+        if (casseContatore > 0) {
+            throw new ConflictException();
+        }
+
         return cassaRepository.save(Cassa.from(payload)).getCassaId();
     }
 
