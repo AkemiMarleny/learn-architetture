@@ -1,7 +1,9 @@
 package co.idesoft.architetture.mvcservices.entities;
 
+import co.idesoft.architetture.common.Sum;
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareCategoriaDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareCategoriaDto;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,11 +25,15 @@ public class Categoria {
 
     private String descrizione;
 
+    @Column(length = 50)
+    private String checksum;
+
     public static Categoria from(CreareCategoriaDto request) {
         Categoria categoria = new Categoria();
 
         categoria.setNome(request.nome());
         categoria.setDescrizione(request.descrizione());
+        categoria.setChecksum(Sum.fromContent(request.nome().trim().toLowerCase()));
 
         return categoria;
     }

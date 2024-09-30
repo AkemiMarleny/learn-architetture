@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareCategoriaDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareCategoriaDto;
 import co.idesoft.architetture.mvcservices.entities.Categoria;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.repositories.CategoriaRepository;
 import jakarta.validation.Valid;
@@ -20,7 +21,14 @@ public class CategoriaService {
 
     private final CategoriaRepository categoriaRepository;
 
-    public Long save(@Valid CreareCategoriaDto payload) {
+    public Long save(@Valid CreareCategoriaDto payload) throws ConflictException {
+        Categoria categoria = Categoria.from(payload);
+
+        Long categorieContatore = categoriaRepository.countByChecksum(categoria.getChecksum());
+
+        if(categorieContatore > 0){
+            throw new ConflictException();
+        }
         return categoriaRepository.save(Categoria.from(payload)).getCategoriaId();
     }
 

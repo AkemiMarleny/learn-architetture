@@ -19,6 +19,7 @@ import co.idesoft.architetture.mvcservices.controllers.dto.CategoriaDettaglioDto
 import co.idesoft.architetture.mvcservices.controllers.dto.CategoriaItemDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareCategoriaDto;
 import co.idesoft.architetture.mvcservices.entities.Categoria;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.services.CategoriaService;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,13 @@ public class CategorieController {
     @PostMapping
     public ResponseEntity<CategoriaCreatoDto> creareCategoria(@RequestBody CreareCategoriaDto request) {
         log.info("creando una nuova categoria con request: {}, request");
-        Long categoriaId = categoriaService.save(request);
-
-        return new ResponseEntity<>(new CategoriaCreatoDto(categoriaId), HttpStatus.CREATED);
+         
+        try {
+            Long categoriaId = categoriaService.save(request);
+            return new ResponseEntity<>(new CategoriaCreatoDto(categoriaId), HttpStatus.CREATED);
+        } catch (ConflictException e) {
+           return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping
