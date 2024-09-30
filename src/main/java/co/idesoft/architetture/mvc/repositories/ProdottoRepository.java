@@ -6,4 +6,5 @@ import co.idesoft.architetture.mvc.entities.Prodotto;
 
 public interface ProdottoRepository extends JpaRepository<Prodotto, Long> {
 
+    Long countByChecksum(String checksum);
 }

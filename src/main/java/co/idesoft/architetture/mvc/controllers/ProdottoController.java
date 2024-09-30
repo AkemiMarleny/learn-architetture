@@ -51,7 +51,15 @@ public class ProdottoController {
     public ResponseEntity<ProdottoCreatoDto> creareProdotto(@Valid @RequestBody CreareProdottoDto request) {
         log.info("creando un nuovo prodotto con request: {}", request);
 
-        Long prodottoId = prodottoRepository.save(Prodotto.from(request))
+        Prodotto prodotto = Prodotto.from(request);
+
+        Long prodottiContatore = prodottoRepository.countByChecksum(prodotto.getChecksum());
+
+        if (prodottiContatore > 0) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+        Long prodottoId = prodottoRepository.save(prodotto)
                 .getProdottoId();
 
         return new ResponseEntity<>(new ProdottoCreatoDto(prodottoId), HttpStatus.CREATED);

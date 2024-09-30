@@ -1,7 +1,9 @@
 package co.idesoft.architetture.mvc.entities;
 
+import co.idesoft.architetture.common.Sum;
 import co.idesoft.architetture.mvc.controllers.dto.AggiornareProdottoDto;
 import co.idesoft.architetture.mvc.controllers.dto.CreareProdottoDto;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,11 +25,15 @@ public class Prodotto {
 
     private String descrizione;
 
+    @Column(length = 50)
+    private String checksum;
+
     public static Prodotto from(CreareProdottoDto request) {
         Prodotto prodotto = new Prodotto();
 
         prodotto.setNome(request.nome());
         prodotto.setDescrizione(request.descrizione());
+        prodotto.setChecksum(Sum.fromContent(request.nome().trim().toLowerCase()));
 
         return prodotto;
     }

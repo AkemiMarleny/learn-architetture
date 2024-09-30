@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>co.idesoft</groupId>
-	<artifactId>jacal-services</artifactId>
+	<artifactId>architetture-services</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>jacal-services</name>
 	<description>Jacal ERP Web Services</description>
