@@ -1,7 +1,9 @@
 package co.idesoft.architetture.mvcservices.entities;
 
+import co.idesoft.architetture.common.Sum;
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareDipendenteDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareDipendenteDto;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,10 +25,15 @@ public class Dipendente {
 
     private String descrizione;
 
+    @Column(length = 50)
+    private String checksum;  
+
     public static Dipendente from(CreareDipendenteDto request) {
         Dipendente dipendente = new Dipendente();
         dipendente.setNome(request.nome());
         dipendente.setDescrizione(request.descrizione());
+        dipendente.setChecksum(Sum.fromContent(request.nome().trim().toLowerCase()));
+
         return dipendente;
     }
 

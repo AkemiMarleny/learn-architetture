@@ -6,4 +6,6 @@ import co.idesoft.architetture.mvcservices.entities.Dipendente;
 
 public interface DipendenteRepository extends JpaRepository<Dipendente, Long> {
 
+    Long countByChecksum(String checksum);
+
 }

@@ -19,6 +19,7 @@ import co.idesoft.architetture.mvcservices.controllers.dto.DipendenteCreatoDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.DipendenteDettaglioDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.DipendenteItemDto;
 import co.idesoft.architetture.mvcservices.entities.Dipendente;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.services.DipendenteService;
 import lombok.RequiredArgsConstructor;
@@ -35,8 +36,13 @@ public class DipendenteController {
     @PostMapping
     public ResponseEntity<DipendenteCreatoDto> creareDipendente(@RequestBody CreareDipendenteDto request) {
         log.info("creando un nuovo dipendente con request: {}, request");
-        Long dipendenteId = dipendenteService.save(request);
-        return new ResponseEntity<>(new DipendenteCreatoDto(dipendenteId), HttpStatus.CREATED);
+         
+        try {
+            Long dipendenteId = dipendenteService.save(request);
+            return new ResponseEntity<>(new DipendenteCreatoDto(dipendenteId), HttpStatus.CREATED);
+        } catch (ConflictException e) {
+           return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
     }
 
     @GetMapping

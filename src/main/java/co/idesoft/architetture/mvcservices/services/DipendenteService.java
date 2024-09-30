@@ -8,6 +8,7 @@ import org.springframework.validation.annotation.Validated;
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareDipendenteDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareDipendenteDto;
 import co.idesoft.architetture.mvcservices.entities.Dipendente;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.repositories.DipendenteRepository;
 import jakarta.validation.Valid;
@@ -20,7 +21,13 @@ public class DipendenteService {
 
     private final DipendenteRepository dipendenteRepository;
 
-    public Long save(@Valid CreareDipendenteDto payload) {
+    public Long save(@Valid CreareDipendenteDto payload) throws ConflictException {
+        Dipendente dipendente = Dipendente.from(payload);
+
+        Long dipendentiContatore = dipendenteRepository.countByChecksum(dipendente.getChecksum());
+        if (dipendentiContatore > 0) {
+            throw new ConflictException();
+        }
         return dipendenteRepository.save(Dipendente.from(payload)).getDipendenteId();
     }
 
