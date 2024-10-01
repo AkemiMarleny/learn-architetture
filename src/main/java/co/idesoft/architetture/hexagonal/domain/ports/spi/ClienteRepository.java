@@ -6,6 +6,8 @@ import co.idesoft.architetture.hexagonal.domain.valuables.ClienteDettaglio;
 import co.idesoft.architetture.hexagonal.domain.valuables.SalvareCliente;
 
 public interface ClienteRepository {
+
+    Long countByChecksum(String checksum);
     Long save(SalvareCliente salvareCliente);
     Optional<ClienteDettaglio> findById(Long clienteId);
 }

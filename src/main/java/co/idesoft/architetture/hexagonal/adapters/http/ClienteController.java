@@ -18,6 +18,7 @@ import co.idesoft.architetture.hexagonal.domain.ports.api.CreareClienteUseCase;
 import co.idesoft.architetture.hexagonal.domain.ports.api.FindClienteByIdUseCase;
 import co.idesoft.architetture.hexagonal.domain.valuables.ClienteDettaglio;
 import co.idesoft.architetture.hexagonal.domain.valuables.CreareCliente;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import lombok.RequiredArgsConstructor;
 
 @RequestMapping("api/clienti")
@@ -30,10 +31,15 @@ public class ClienteController {
 
     @PostMapping
     public ResponseEntity<ClienteCreatoDto> creareCliente(@RequestBody CreareClienteDto request) {
-        Long clienteId = creareClienteUseCase.creareCliente(
-                new CreareCliente(request.nome(), request.descrizione()));
+       
+        try {
+           Long clienteId = creareClienteUseCase.creareCliente(
+                    new CreareCliente(request.nome(), request.descrizione()));
+                    return new ResponseEntity<>(new ClienteCreatoDto(clienteId), HttpStatus.CREATED);
+        } catch (ConflictException e) {
+           return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
 
-        return new ResponseEntity<>(new ClienteCreatoDto(clienteId), HttpStatus.CREATED);
     }
 
     @GetMapping("{clienteId}")

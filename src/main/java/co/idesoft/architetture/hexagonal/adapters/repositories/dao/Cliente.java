@@ -1,6 +1,7 @@
 package co.idesoft.architetture.hexagonal.adapters.repositories.dao;
 
 import co.idesoft.architetture.hexagonal.domain.valuables.SalvareCliente;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,11 +21,15 @@ public class Cliente {
     private String nome;
     private String descrizione;
 
-    public static Cliente from(SalvareCliente salvareCliente) {
+    @Column(length = 50)
+    private String checksum;
+
+    public static Cliente from(SalvareCliente payload) {
         Cliente cliente = new Cliente();
         
-        cliente.setNome(salvareCliente.nome());
-        cliente.setDescrizione(salvareCliente.descrizione());
+        cliente.setNome(payload.nome());
+        cliente.setDescrizione(payload.descrizione());
+        cliente.setChecksum(payload.checksum().get());
         
         return cliente;
     }

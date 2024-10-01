@@ -19,6 +19,11 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     private final JpaClienteRepository jpaClienteRepository;
 
     @Override
+    public Long countByChecksum(String checksum) {
+      return jpaClienteRepository.countByChecksum(checksum);
+    }
+
+    @Override
     public Long save(SalvareCliente salvareCliente) {
         return jpaClienteRepository.save(Cliente.from(salvareCliente)).getId();
     }
@@ -27,5 +32,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     public Optional<ClienteDettaglio> findById(Long clienteId) {
         return jpaClienteRepository.findById(clienteId).map(ClienteFactory::from);  
     }
+
+    
 
 }
