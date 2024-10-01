@@ -1,7 +1,9 @@
 package co.idesoft.architetture.cqrs.entities;
 
+import co.idesoft.architetture.common.Sum;
 import co.idesoft.architetture.cqrs.commands.AggiornareFornitoreCommand;
 import co.idesoft.architetture.cqrs.commands.CreareFornitoreCommand;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,11 +24,15 @@ public class Fornitore {
     private String nome;
     private String descrizione;
 
+    @Column(length = 50)
+    private String checksum;
+
     public static Fornitore from(CreareFornitoreCommand command) {
         Fornitore fornitore = new Fornitore();
 
         fornitore.setNome(command.nome());
         fornitore.setDescrizione(command.descrizione());
+        fornitore.setChecksum(Sum.fromContent(command.nome().trim().toLowerCase()));
 
         return fornitore;
     }

@@ -16,6 +16,7 @@ import co.idesoft.architetture.cqrs.dtos.AggiotnareFornitoreDto;
 import co.idesoft.architetture.cqrs.dtos.CreareFornitoreDto;
 import co.idesoft.architetture.cqrs.dtos.FornitoreCreatoDto;
 import co.idesoft.architetture.cqrs.services.FornitoreService;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,11 +31,16 @@ public class FornitoreWriterController {
 
     @PostMapping
     public ResponseEntity<FornitoreCreatoDto> creareFornitore(@RequestBody CreareFornitoreDto request) {
+        log.info("creando un nuovo fornitore con request: {}, request");
 
-        Long fornitoreId = fornitoreService.creareFornitore(
-                new CreareFornitoreCommand(request.nome(), request.descrizione()));
+        try {
+           Long fornitoreId = fornitoreService.save(
+                    new CreareFornitoreCommand(request.nome(), request.descrizione()));
+                    return new ResponseEntity<>(new FornitoreCreatoDto(fornitoreId), HttpStatus.CREATED);
+        } catch (ConflictException e) {
+           return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
 
-        return ResponseEntity.ok(new FornitoreCreatoDto(fornitoreId));
     }
 
     @PutMapping("{fornitoreId}")

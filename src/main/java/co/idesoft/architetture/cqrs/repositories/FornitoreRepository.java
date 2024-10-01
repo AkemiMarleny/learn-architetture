@@ -6,4 +6,5 @@ import co.idesoft.architetture.cqrs.entities.Fornitore;
 
 public interface FornitoreRepository extends JpaRepository<Fornitore, Long> {
 
+    Long countByChecksum(String checksum);
 }

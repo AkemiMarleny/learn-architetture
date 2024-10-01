@@ -7,6 +7,7 @@ import co.idesoft.architetture.cqrs.commands.AggiornareFornitoreCommand;
 import co.idesoft.architetture.cqrs.commands.CreareFornitoreCommand;
 import co.idesoft.architetture.cqrs.entities.Fornitore;
 import co.idesoft.architetture.cqrs.repositories.FornitoreRepository;
+import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,15 @@ public class FornitoreService {
 
     private final FornitoreRepository fornitoreRepository;
 
-    public Long creareFornitore(@Valid CreareFornitoreCommand command) {
+    public Long save(@Valid CreareFornitoreCommand command) throws ConflictException {
+        Fornitore fornitore = Fornitore.from(command);
+
+        Long fornitoriContatore = fornitoreRepository.countByChecksum(fornitore.getChecksum());
+
+        if(fornitoriContatore > 0){
+            throw new ConflictException();
+        }
+
         return fornitoreRepository.save(Fornitore.from(command)).getId();
     }
 
