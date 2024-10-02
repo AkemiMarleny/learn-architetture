@@ -2,6 +2,7 @@ package co.idesoft.architetture.hexagonal.adapters.repositories.factories;
 
 import co.idesoft.architetture.hexagonal.adapters.repositories.dao.Cliente;
 import co.idesoft.architetture.hexagonal.domain.valuables.ClienteDettaglio;
+import co.idesoft.architetture.hexagonal.domain.valuables.ClienteItem;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -9,5 +10,12 @@ import lombok.NoArgsConstructor;
 public class ClienteFactory {
     public static ClienteDettaglio from(Cliente cliente) {
         return new ClienteDettaglio(cliente.getId(), cliente.getNome(), cliente.getDescrizione());
+    }
+
+    public static ClienteItem clienteItemFrom(Cliente cliente){
+        return new ClienteItem(
+            cliente.getId(), 
+            cliente.getNome(),
+            cliente.getDescrizione());
     }
 }
