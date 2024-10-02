@@ -34,7 +34,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public Optional<ClienteDettaglio> findById(Long clienteId) {
-        return jpaClienteRepository.findById(clienteId).map(ClienteFactory::from);  
+        return jpaClienteRepository.findById(clienteId).map(ClienteFactory::clienteDettaglioFrom);  
     }
 
     @Override

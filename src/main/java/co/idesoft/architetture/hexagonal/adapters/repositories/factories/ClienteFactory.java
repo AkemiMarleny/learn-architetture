@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ClienteFactory {
-    public static ClienteDettaglio from(Cliente cliente) {
+    public static ClienteDettaglio clienteDettaglioFrom(Cliente cliente) {
         return new ClienteDettaglio(cliente.getId(), cliente.getNome(), cliente.getDescrizione());
     }
 
