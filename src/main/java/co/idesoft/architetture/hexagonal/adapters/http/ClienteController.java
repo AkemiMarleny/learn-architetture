@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import co.idesoft.architetture.hexagonal.adapters.http.dto.ClienteDettaglioDto;
 import co.idesoft.architetture.hexagonal.adapters.http.dto.ClienteItemDto;
 import co.idesoft.architetture.hexagonal.adapters.http.dto.CreareClienteDto;
 import co.idesoft.architetture.hexagonal.domain.ports.api.AggiornareClienteUseCase;
+import co.idesoft.architetture.hexagonal.domain.ports.api.CancellareClienteUseCase;
 import co.idesoft.architetture.hexagonal.domain.ports.api.CreareClienteUseCase;
 import co.idesoft.architetture.hexagonal.domain.ports.api.FindAllClientiUseCase;
 import co.idesoft.architetture.hexagonal.domain.ports.api.FindClienteByIdUseCase;
@@ -40,6 +42,7 @@ public class ClienteController {
     private final FindClienteByIdUseCase findClienteByIdUseCase;
     private final FindAllClientiUseCase findAllClientiUseCase;
     private final AggiornareClienteUseCase aggiornareClienteUseCase;
+    private final CancellareClienteUseCase cancellareClienteUseCase;
 
     @PostMapping
     public ResponseEntity<ClienteCreatoDto> creareCliente(@RequestBody CreareClienteDto request) {
@@ -89,4 +92,11 @@ public class ClienteController {
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @DeleteMapping("{clienteId}")
+    public ResponseEntity<Void> cancellaCliente(@PathVariable Long clienteId) {
+        cancellareClienteUseCase.cancellaCliente(clienteId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
 }

@@ -60,4 +60,9 @@ public class ClienteRepositoryImpl implements ClienteRepository {
         return jpaClienteRepository.countByChecksumAndIdNotIn(checksum, ids);
     }
 
+    @Override
+    public void deleteById(Long clienteId) {
+        jpaClienteRepository.deleteById(clienteId);
+    }
+
 }
