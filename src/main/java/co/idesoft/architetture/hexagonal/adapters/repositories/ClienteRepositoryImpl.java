@@ -1,5 +1,6 @@
 package co.idesoft.architetture.hexagonal.adapters.repositories;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Repository;
@@ -13,7 +14,9 @@ import co.idesoft.architetture.hexagonal.adapters.repositories.jpa.JpaClienteRep
 import co.idesoft.architetture.hexagonal.domain.ports.spi.ClienteRepository;
 import co.idesoft.architetture.hexagonal.domain.valuables.ClienteDettaglio;
 import co.idesoft.architetture.hexagonal.domain.valuables.ClienteItem;
+import co.idesoft.architetture.hexagonal.domain.valuables.SalvaAggiornamentoCliente;
 import co.idesoft.architetture.hexagonal.domain.valuables.SalvareCliente;
+import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public Long countByChecksum(String checksum) {
-      return jpaClienteRepository.countByChecksum(checksum);
+        return jpaClienteRepository.countByChecksum(checksum);
     }
 
     @Override
@@ -34,15 +37,27 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public Optional<ClienteDettaglio> findById(Long clienteId) {
-        return jpaClienteRepository.findById(clienteId).map(ClienteFactory::clienteDettaglioFrom);  
+        return jpaClienteRepository.findById(clienteId).map(ClienteFactory::clienteDettaglioFrom);
     }
 
     @Override
     public Page<ClienteItem> findAll(Pagination pagination) {
         return PageableFactory.from(jpaClienteRepository.findAll(PageableFactory.from(pagination))
-            .map(ClienteFactory::clienteItemFrom));
+                .map(ClienteFactory::clienteItemFrom));
     }
 
-    
+    @Override
+    public void update(SalvaAggiornamentoCliente payload) throws RecordNotFoundException {
+        Cliente cliente = jpaClienteRepository.findById(payload.id()).orElseThrow(RecordNotFoundException::new);
+
+        cliente.aggiornaCon(payload);
+
+        jpaClienteRepository.save(cliente);
+    }
+
+    @Override
+    public Long countByChecksumAndIdNotIn(String checksum, List<Long> ids) {
+        return jpaClienteRepository.countByChecksumAndIdNotIn(checksum, ids);
+    }
 
 }

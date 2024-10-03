@@ -1,5 +1,6 @@
 package co.idesoft.architetture.hexagonal.adapters.repositories.dao;
 
+import co.idesoft.architetture.hexagonal.domain.valuables.SalvaAggiornamentoCliente;
 import co.idesoft.architetture.hexagonal.domain.valuables.SalvareCliente;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,5 +33,11 @@ public class Cliente {
         cliente.setChecksum(payload.checksum().get());
         
         return cliente;
+    }
+
+    public void aggiornaCon(SalvaAggiornamentoCliente payload){
+        this.nome = payload.nome();
+        this.descrizione = payload.descrizione();
+        this.checksum = payload.checksum().get();
     }
 }
