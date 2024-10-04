@@ -1,5 +1,6 @@
 package co.idesoft.architetture.hexagonal.adapters.repositories.dao;
 
+import co.idesoft.architetture.hexagonal.domain.services.SalvaAggiornamentoCassiera;
 import co.idesoft.architetture.hexagonal.domain.valuables.SalvareCassiera;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -34,6 +35,13 @@ public class Cassiera {
         cassiera.setChecksum(payload.checksum().get());
 
         return cassiera;
+    }
+
+    public void aggiornaCon(SalvaAggiornamentoCassiera payload) {
+
+        this.nome = payload.nome();
+        this.descrizione = payload.descrizione();
+        this.checksum = payload.checksum().get();
     }
 
 }
