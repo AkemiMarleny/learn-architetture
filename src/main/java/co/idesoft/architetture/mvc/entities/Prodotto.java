@@ -1,5 +1,7 @@
 package co.idesoft.architetture.mvc.entities;
 
+import org.hibernate.annotations.SoftDelete;
+
 import co.idesoft.architetture.common.Sum;
 import co.idesoft.architetture.mvc.controllers.dto.AggiornareProdottoDto;
 import co.idesoft.architetture.mvc.controllers.dto.CreareProdottoDto;
@@ -16,6 +18,7 @@ import lombok.Setter;
 @Table(name = "prodotti")
 @Getter
 @Setter
+@SoftDelete(columnName = "dataEliminazione")
 public class Prodotto {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
