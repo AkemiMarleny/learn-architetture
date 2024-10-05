@@ -1,5 +1,8 @@
 package co.idesoft.architetture.cqrs.entities;
 
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
+
 import co.idesoft.architetture.common.Sum;
 import co.idesoft.architetture.cqrs.commands.AggiornareFornitoreCommand;
 import co.idesoft.architetture.cqrs.commands.CreareFornitoreCommand;
@@ -16,6 +19,7 @@ import lombok.Setter;
 @Table(name = "fornitori")
 @Getter
 @Setter
+@SoftDelete(strategy = SoftDeleteType.DELETED)
 public class Fornitore {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +41,7 @@ public class Fornitore {
         return fornitore;
     }
 
-    public void aggiornaCon(AggiornareFornitoreCommand command){
+    public void aggiornaCon(AggiornareFornitoreCommand command) {
         this.nome = command.nome();
         this.descrizione = command.descrizione();
     }
