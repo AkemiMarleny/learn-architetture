@@ -1,5 +1,8 @@
 package co.idesoft.architetture.mvcservices.entities;
 
+import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SoftDeleteType;
+
 import co.idesoft.architetture.common.Sum;
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareCassaDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareCassaDto;
@@ -16,6 +19,7 @@ import lombok.Setter;
 @Table(name = "casse")
 @Getter
 @Setter
+@SoftDelete(strategy = SoftDeleteType.DELETED)
 public class Cassa {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
