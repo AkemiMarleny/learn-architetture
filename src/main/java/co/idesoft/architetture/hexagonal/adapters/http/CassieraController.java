@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,6 +22,7 @@ import co.idesoft.architetture.hexagonal.adapters.http.dto.CassieraDettaglioDto;
 import co.idesoft.architetture.hexagonal.adapters.http.dto.CassieraItemDto;
 import co.idesoft.architetture.hexagonal.adapters.http.dto.CreareCassieraDto;
 import co.idesoft.architetture.hexagonal.domain.ports.api.AggiornareCassieraUseCase;
+import co.idesoft.architetture.hexagonal.domain.ports.api.CancellareCassieraUseCase;
 import co.idesoft.architetture.hexagonal.domain.ports.api.CreareCassieraUseCase;
 import co.idesoft.architetture.hexagonal.domain.ports.api.FindAllCassiereUseCase;
 import co.idesoft.architetture.hexagonal.domain.ports.api.FindCassieraByIdUseCase;
@@ -40,6 +42,7 @@ public class CassieraController {
     private final FindCassieraByIdUseCase findCassieraByIdUseCase;
     private final FindAllCassiereUseCase findAllCassiereUseCase;
     private final AggiornareCassieraUseCase aggiornareCassieraUseCase;
+    private final CancellareCassieraUseCase cancellareCassieraUseCase;
 
     @PostMapping
     public ResponseEntity<CassieraCreataDto> creareCassiera(@RequestBody CreareCassieraDto request) {
@@ -89,6 +92,12 @@ public class CassieraController {
         } catch (RecordNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @DeleteMapping("{cassieraId}")
+    public ResponseEntity<Void> cancellaCassiera(@PathVariable Long cassieraId) {
+        cancellareCassieraUseCase.cancellaCassiera(cassieraId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

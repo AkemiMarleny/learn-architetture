@@ -24,4 +24,6 @@ public interface CassieraRepository {
     Long countByChecksumAndIdNotIn(String checksum, List<Long> ids);
 
     void update(SalvaAggiornamentoCassiera payloadAggiornamentoCassiera) throws RecordNotFoundException;
+
+    void deleteById(Long cassieraId);
 }

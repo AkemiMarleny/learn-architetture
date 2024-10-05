@@ -61,4 +61,9 @@ public class CassieraRepositoryImpl implements CassieraRepository {
         jpaCassieraRepository.save(cassiera);
     }
 
+    @Override
+    public void deleteById(Long cassieraId) {
+        jpaCassieraRepository.deleteById(cassieraId);
+    }
+
 }
