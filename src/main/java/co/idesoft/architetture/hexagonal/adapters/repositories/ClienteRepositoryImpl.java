@@ -37,12 +37,13 @@ public class ClienteRepositoryImpl implements ClienteRepository {
 
     @Override
     public Optional<ClienteDettaglio> findById(Long clienteId) {
-        return jpaClienteRepository.findById(clienteId).map(ClienteFactory::clienteDettaglioFrom);
+        return jpaClienteRepository.findByIdAndDataEliminazioneIsNull(clienteId)
+                .map(ClienteFactory::clienteDettaglioFrom);
     }
 
     @Override
     public Page<ClienteItem> findAll(Pagination pagination) {
-        return PageableFactory.from(jpaClienteRepository.findAll(PageableFactory.from(pagination))
+        return PageableFactory.from(jpaClienteRepository.findByDataEliminazioneIsNull(PageableFactory.from(pagination))
                 .map(ClienteFactory::clienteItemFrom));
     }
 
@@ -61,8 +62,12 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
-    public void deleteById(Long clienteId) {
-        jpaClienteRepository.deleteById(clienteId);
+    public void deleteById(Long clienteId) throws RecordNotFoundException {
+        Cliente cliente = jpaClienteRepository.findById(clienteId).orElseThrow(RecordNotFoundException::new);
+
+        cliente.cancella();
+
+        jpaClienteRepository.save(cliente);
     }
 
 }

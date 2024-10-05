@@ -95,8 +95,12 @@ public class ClienteController {
 
     @DeleteMapping("{clienteId}")
     public ResponseEntity<Void> cancellaCliente(@PathVariable Long clienteId) {
-        cancellareClienteUseCase.cancellaCliente(clienteId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        try {
+            cancellareClienteUseCase.cancellaCliente(clienteId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (RecordNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
 }

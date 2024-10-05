@@ -1,6 +1,7 @@
 package co.idesoft.architetture.hexagonal.domain.services;
 
 import java.util.Arrays;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
@@ -9,6 +10,7 @@ import co.idesoft.architetture.hexagonal.domain.ports.api.AggiornareClienteUseCa
 import co.idesoft.architetture.hexagonal.domain.ports.spi.ClienteRepository;
 import co.idesoft.architetture.hexagonal.domain.valuables.AggiornareCliente;
 import co.idesoft.architetture.hexagonal.domain.valuables.ClienteChecksum;
+import co.idesoft.architetture.hexagonal.domain.valuables.ClienteDettaglio;
 import co.idesoft.architetture.hexagonal.domain.valuables.SalvaAggiornamentoCliente;
 import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
@@ -24,6 +26,13 @@ public class AggiornareClienteUseCaseImpl implements AggiornareClienteUseCase {
 
     @Override
     public void aggiornaCliente(@Valid AggiornareCliente payload) throws ConflictException, RecordNotFoundException {
+
+        Optional<ClienteDettaglio> clienteDettaglio = clienteRepository.findById(payload.id());
+
+        if (clienteDettaglio.isEmpty()) {
+            throw new RecordNotFoundException();
+        }
+
         ClienteChecksum clienteChecksum = new ClienteChecksum(payload.nome());
 
         Long clientiContatore = clienteRepository.countByChecksumAndIdNotIn(clienteChecksum.get(),

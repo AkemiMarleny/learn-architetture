@@ -25,6 +25,6 @@ public interface ClienteRepository {
 
     Long countByChecksumAndIdNotIn(String checksum, List<Long> ids);
 
-    void deleteById(Long clienteId);
+    void deleteById(Long clienteId) throws RecordNotFoundException;
 
 }
