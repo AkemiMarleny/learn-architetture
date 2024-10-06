@@ -1,5 +1,6 @@
 package co.idesoft.architetture.mvc.controllers;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -82,11 +83,21 @@ public class ProdottoController {
     public ResponseEntity<Void> updateProdotto(@PathVariable Long prodottoId,
             @RequestBody AggiornareProdottoDto request) {
         log.info("aggiornando il prodotto con id: {}", prodottoId);
+
         Optional<Prodotto> prodotto = prodottoRepository.findById(prodottoId);
 
         if (prodotto.isPresent()) {
             Prodotto prodottoAModificare = prodotto.get();
+
             prodottoAModificare.aggiornaCon(request);
+
+            Long prodottiContatore = prodottoRepository.countByChecksumAndProdottoIdNotIn(
+                    prodottoAModificare.getChecksum(),
+                    Arrays.asList(prodottoId));
+
+            if (prodottiContatore > 0) {
+                return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
 
             prodottoRepository.save(prodottoAModificare);
 

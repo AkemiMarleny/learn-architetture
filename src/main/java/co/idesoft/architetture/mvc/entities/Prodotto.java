@@ -44,5 +44,6 @@ public class Prodotto {
     public void aggiornaCon(AggiornareProdottoDto request) {
         this.nome = request.nome();
         this.descrizione = request.descrizione();
+        this.checksum = Sum.fromContent(request.nome().trim().toLowerCase());
     }
 }
