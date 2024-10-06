@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.idesoft.architetture.mvc.controllers.dto.AggiornareProdottoDto;
@@ -35,13 +36,13 @@ public class ProdottoController {
     private final ProdottoRepository prodottoRepository;
 
     @GetMapping
-    public ResponseEntity<Page<ProdottoItemDto>> getAllProdotti(Pageable pageable) {
+    public ResponseEntity<Page<ProdottoItemDto>> getAllProdotti(Pageable pageable, @RequestParam String q) {
         // List<ProdottoItemDto> prodotti = prodottoRepository.findAll()
         // .stream()
         // .map(ProdottoItemDto::fromEntity)
         // .collect(Collectors.toList());
 
-        Page<ProdottoItemDto> prodottiPage = prodottoRepository.findAll(pageable)
+        Page<ProdottoItemDto> prodottiPage = prodottoRepository.findByNomeContaining(pageable, q)
                 .map(ProdottoItemDto::fromEntity);
 
         return ResponseEntity.ok(prodottiPage);
