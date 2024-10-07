@@ -31,8 +31,8 @@ public class DipendenteService {
         return dipendenteRepository.save(Dipendente.from(payload)).getDipendenteId();
     }
 
-    public Page<Dipendente> findAll(Pageable pageable) {
-        return dipendenteRepository.findAll(pageable);
+    public Page<Dipendente> findAll(Pageable pageable, String query) {
+        return dipendenteRepository.findByNomeContaining(pageable, query);
     }
 
     public Dipendente findDettaglio(Long dipendentiId) throws RecordNotFoundException {

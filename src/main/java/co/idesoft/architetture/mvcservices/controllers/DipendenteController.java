@@ -36,18 +36,18 @@ public class DipendenteController {
     @PostMapping
     public ResponseEntity<DipendenteCreatoDto> creareDipendente(@RequestBody CreareDipendenteDto request) {
         log.info("creando un nuovo dipendente con request: {}, request");
-         
+
         try {
             Long dipendenteId = dipendenteService.save(request);
             return new ResponseEntity<>(new DipendenteCreatoDto(dipendenteId), HttpStatus.CREATED);
         } catch (ConflictException e) {
-           return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @GetMapping
-    public ResponseEntity<Page<DipendenteItemDto>> getAllDipendenti(Pageable pageable) {
-        Page<DipendenteItemDto> dipendentiPage = dipendenteService.findAll(pageable)
+    public ResponseEntity<Page<DipendenteItemDto>> getAllDipendenti(Pageable pageable, String q) {
+        Page<DipendenteItemDto> dipendentiPage = dipendenteService.findAll(pageable, q)
                 .map(DipendenteItemDto::fromEntity);
 
         return ResponseEntity.ok(dipendentiPage);
