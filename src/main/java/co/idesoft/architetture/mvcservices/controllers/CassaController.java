@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareCassaDto;
@@ -34,20 +35,20 @@ public class CassaController {
     private final CassaService cassaService;
 
     @PostMapping
-    public ResponseEntity<CassaCreatoDto> creareCassa(@RequestBody CreareCassaDto request)  {
+    public ResponseEntity<CassaCreatoDto> creareCassa(@RequestBody CreareCassaDto request) {
         log.info("creando una nuova cassa con request: {}, request");
-       
+
         try {
-           Long cassaId = cassaService.save(request);
-           return new ResponseEntity<>(new CassaCreatoDto(cassaId), HttpStatus.CREATED);
+            Long cassaId = cassaService.save(request);
+            return new ResponseEntity<>(new CassaCreatoDto(cassaId), HttpStatus.CREATED);
         } catch (ConflictException e) {
-         return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @GetMapping
-    public ResponseEntity<Page<CassaItemDto>> getAllCasse(Pageable pageable) {
-        Page<CassaItemDto> cassePage = cassaService.findAll(pageable)
+    public ResponseEntity<Page<CassaItemDto>> getAllCasse(Pageable pageable, @RequestParam String q) {
+        Page<CassaItemDto> cassePage = cassaService.findAll(pageable, q)
                 .map(CassaItemDto::fromEntity);
         return ResponseEntity.ok(cassePage);
     }

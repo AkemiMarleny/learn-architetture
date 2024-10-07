@@ -23,7 +23,7 @@ public class CassaService {
 
     public Long save(@Valid CreareCassaDto payload) throws ConflictException {
         Cassa cassa = Cassa.from(payload);
-        
+
         Long casseContatore = cassaRepository.countByChecksum(cassa.getChecksum());
 
         if (casseContatore > 0) {
@@ -33,8 +33,8 @@ public class CassaService {
         return cassaRepository.save(Cassa.from(payload)).getCassaId();
     }
 
-    public Page<Cassa> findAll(Pageable pageable) {
-        return cassaRepository.findAll(pageable);
+    public Page<Cassa> findAll(Pageable pageable, String query) {
+        return cassaRepository.findByNomeContaining(pageable, query);
     }
 
     public Cassa findDettaglio(Long cassaId) throws RecordNotFoundException {
