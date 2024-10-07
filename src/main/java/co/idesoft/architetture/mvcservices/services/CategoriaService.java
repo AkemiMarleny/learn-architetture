@@ -26,14 +26,14 @@ public class CategoriaService {
 
         Long categorieContatore = categoriaRepository.countByChecksum(categoria.getChecksum());
 
-        if(categorieContatore > 0){
+        if (categorieContatore > 0) {
             throw new ConflictException();
         }
         return categoriaRepository.save(Categoria.from(payload)).getCategoriaId();
     }
 
-    public Page<Categoria> findAll(Pageable pageable) {
-        return categoriaRepository.findAll(pageable);
+    public Page<Categoria> findAll(Pageable pageable, String query) {
+        return categoriaRepository.findByNomeContaining(pageable, query);
     }
 
     public Categoria findDettaglio(Long categoriaId) throws RecordNotFoundException {

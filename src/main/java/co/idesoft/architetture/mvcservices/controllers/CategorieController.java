@@ -36,18 +36,18 @@ public class CategorieController {
     @PostMapping
     public ResponseEntity<CategoriaCreatoDto> creareCategoria(@RequestBody CreareCategoriaDto request) {
         log.info("creando una nuova categoria con request: {}, request");
-         
+
         try {
             Long categoriaId = categoriaService.save(request);
             return new ResponseEntity<>(new CategoriaCreatoDto(categoriaId), HttpStatus.CREATED);
         } catch (ConflictException e) {
-           return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 
     @GetMapping
-    public ResponseEntity<Page<CategoriaItemDto>> getAllCategorie(Pageable pageable) {
-        Page<CategoriaItemDto> categoriePage = categoriaService.findAll(pageable)
+    public ResponseEntity<Page<CategoriaItemDto>> getAllCategorie(Pageable pageable, String q) {
+        Page<CategoriaItemDto> categoriePage = categoriaService.findAll(pageable, q)
                 .map(CategoriaItemDto::fromEntity);
         return ResponseEntity.ok(categoriePage);
     }
