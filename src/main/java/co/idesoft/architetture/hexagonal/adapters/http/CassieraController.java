@@ -69,10 +69,10 @@ public class CassieraController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<CassieraItemDto>> getAllCassiera(Pageable pageable) {
+    public ResponseEntity<Page<CassieraItemDto>> getAllCassiera(Pageable pageable, String q) {
 
         Page<CassieraItemDto> cassierePage = findAllCassiereUseCase.findAllCassiere(
-                PageableFactory.from(pageable)).map(CassieraItemDto::from);
+                PageableFactory.from(pageable), q).map(CassieraItemDto::from);
 
         return new ResponseEntity<>(cassierePage, HttpStatus.OK);
     }

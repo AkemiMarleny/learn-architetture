@@ -41,8 +41,8 @@ public class CassieraRepositoryImpl implements CassieraRepository {
     }
 
     @Override
-    public Page<CassieraItem> findAll(Pagination pagination) {
-        return PageableFactory.from(jpaCassieraRepository.findAll(PageableFactory.from(pagination))
+    public Page<CassieraItem> findByNomeContaining(Pagination pagination, String query) {
+        return PageableFactory.from(jpaCassieraRepository.findByNomeContaining(PageableFactory.from(pagination), query)
                 .map(CassieraFactory::cassieraItemFrom));
     }
 

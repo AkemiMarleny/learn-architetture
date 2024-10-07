@@ -16,8 +16,8 @@ public class FindAllCassiereUseCaseImpl implements FindAllCassiereUseCase {
     private final CassieraRepository cassieraRepository;
 
     @Override
-    public Page<CassieraItem> findAllCassiere(Pagination pagination) {
-        return cassieraRepository.findAll(pagination);
+    public Page<CassieraItem> findAllCassiere(Pagination pagination, String query) {
+        return cassieraRepository.findByNomeContaining(pagination, query);
     }
 
 }

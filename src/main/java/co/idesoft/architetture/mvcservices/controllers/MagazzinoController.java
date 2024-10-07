@@ -36,8 +36,8 @@ public class MagazzinoController {
     private final MagazzinoService magazzinoService;
 
     @GetMapping
-    public ResponseEntity<Page<MagazzinoItemDto>> getAllMagazzini(Pageable pageable) {
-        Page<MagazzinoItemDto> magazziniPage = magazzinoService.findAll(pageable)
+    public ResponseEntity<Page<MagazzinoItemDto>> getAllMagazzini(Pageable pageable, String q) {
+        Page<MagazzinoItemDto> magazziniPage = magazzinoService.findAll(pageable, q)
                 .map(MagazzinoItemDto::fromEntity);
         return ResponseEntity.ok(magazziniPage);
     }
@@ -45,10 +45,10 @@ public class MagazzinoController {
     @PostMapping
     public ResponseEntity<MagazzinoCreatoDto> creareMagazzino(@RequestBody CreareMagazzinoDto request) {
         log.info("creando un nuovo magazzino con request: {}", request);
-       
+
         try {
-           Long magazzinoId = magazzinoService.save(request);
-           return new ResponseEntity<>(new MagazzinoCreatoDto(magazzinoId), HttpStatus.CREATED);
+            Long magazzinoId = magazzinoService.save(request);
+            return new ResponseEntity<>(new MagazzinoCreatoDto(magazzinoId), HttpStatus.CREATED);
         } catch (ConflictException e) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }

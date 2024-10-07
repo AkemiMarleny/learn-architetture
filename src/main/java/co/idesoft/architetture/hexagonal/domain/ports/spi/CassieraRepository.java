@@ -19,7 +19,7 @@ public interface CassieraRepository {
 
     Optional<CassieraDettaglio> findById(Long cassieraId);
 
-    Page<CassieraItem> findAll(Pagination pagination);
+    Page<CassieraItem> findByNomeContaining(Pagination pagination, String query);
 
     Long countByChecksumAndIdNotIn(String checksum, List<Long> ids);
 

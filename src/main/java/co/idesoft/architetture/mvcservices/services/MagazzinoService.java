@@ -23,8 +23,8 @@ public class MagazzinoService {
 
     private final MagazzinoRepository magazzinoRepository;
 
-    public Page<Magazzino> findAll(Pageable pageable) {
-        return magazzinoRepository.findAll(pageable);
+    public Page<Magazzino> findAll(Pageable pageable, String query) {
+        return magazzinoRepository.findByNomeContaining(pageable, query);
     }
 
     public Long save(@Valid CreareMagazzinoDto payload) throws ConflictException {
