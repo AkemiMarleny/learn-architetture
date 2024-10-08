@@ -1,5 +1,8 @@
 package co.idesoft.architetture.mvcservices.services;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,13 +44,33 @@ public class CassaService {
         return cassaRepository.findById(cassaId).orElseThrow(RecordNotFoundException::new);
     }
 
-    public void update(Long cassaId, @Valid AggiornareCassaDto payload) throws RecordNotFoundException {
-        Cassa cassa = cassaRepository.findById(cassaId)
-                .orElseThrow(RecordNotFoundException::new);
+    public void update(Long cassaId, @Valid AggiornareCassaDto payload)
+            throws RecordNotFoundException, ConflictException {
+        // Cassa cassa = cassaRepository.findById(cassaId)
+        // .orElseThrow(RecordNotFoundException::new);
+        // cassa.aggiornaCon(payload);
+        // cassaRepository.save(cassa);
 
-        cassa.aggiornaCon(payload);
+        Optional<Cassa> casse = cassaRepository.findById(cassaId);
 
-        cassaRepository.save(cassa);
+        if (casse.isPresent()) {
+            Cassa cassaModificare = casse.get();
+
+            cassaModificare.aggiornaCon(payload);
+
+            Long casseContantore = cassaRepository.countByChecksumAndCassaIdNotIn(cassaModificare.getChecksum(),
+                    Arrays.asList(cassaId));
+
+            if (casseContantore > 0) {
+                throw new ConflictException();
+            }
+
+            cassaRepository.save(cassaModificare);
+        }
+
+        else {
+            throw new RecordNotFoundException();
+        }
     }
 
     public void cancella(Long cassaId) {

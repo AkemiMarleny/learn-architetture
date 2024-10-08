@@ -71,8 +71,9 @@ public class CassaController {
             @RequestBody AggiornareCassaDto request) {
         try {
             cassaService.update(cassaId, request);
+        } catch (ConflictException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RecordNotFoundException e) {
-
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

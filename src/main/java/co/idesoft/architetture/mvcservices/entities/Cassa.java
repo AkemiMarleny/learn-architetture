@@ -45,6 +45,8 @@ public class Cassa {
     public void aggiornaCon(AggiornareCassaDto request) {
         this.nome = request.nome();
         this.descrizione = request.descrizione();
+        this.checksum = Sum.fromContent(request.nome().trim().toLowerCase());
+
     }
 
 }
