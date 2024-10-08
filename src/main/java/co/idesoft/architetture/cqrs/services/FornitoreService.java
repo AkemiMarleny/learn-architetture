@@ -58,6 +58,10 @@ public class FornitoreService {
             fornitoreRepository.save(fornitoreModificare);
         }
 
+        else {
+            throw new RecordNotFoundException();
+        }
+
     }
 
     public void cancella(Long fornitoreId) {
