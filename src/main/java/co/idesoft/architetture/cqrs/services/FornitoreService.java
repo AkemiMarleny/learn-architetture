@@ -1,5 +1,8 @@
 package co.idesoft.architetture.cqrs.services;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
@@ -24,23 +27,40 @@ public class FornitoreService {
 
         Long fornitoriContatore = fornitoreRepository.countByChecksum(fornitore.getChecksum());
 
-        if(fornitoriContatore > 0){
+        if (fornitoriContatore > 0) {
             throw new ConflictException();
         }
 
         return fornitoreRepository.save(Fornitore.from(command)).getId();
     }
 
-    public void update(Long fornitoreId, @Valid AggiornareFornitoreCommand command) throws RecordNotFoundException{
-        Fornitore fornitore = fornitoreRepository.findById(fornitoreId)
-            .orElseThrow(RecordNotFoundException::new);
+    public void update(Long fornitoreId, @Valid AggiornareFornitoreCommand command)
+            throws RecordNotFoundException, ConflictException {
+        // Fornitore fornitore = fornitoreRepository.findById(fornitoreId)
+        // .orElseThrow(RecordNotFoundException::new);
+        // fornitore.aggiornaCon(command);
+        // fornitoreRepository.save(fornitore);
 
-            fornitore.aggiornaCon(command);
+        Optional<Fornitore> fornitore = fornitoreRepository.findById(fornitoreId);
 
-            fornitoreRepository.save(fornitore);
+        if (fornitore.isPresent()) {
+            Fornitore fornitoreModificare = fornitore.get();
+
+            fornitoreModificare.aggiornaCon(command);
+
+            Long fornitoriContatore = fornitoreRepository.countByChecksumAndIdNotIn(fornitoreModificare.getChecksum(),
+                    Arrays.asList(fornitoreId));
+
+            if (fornitoriContatore > 0) {
+                throw new ConflictException();
+            }
+
+            fornitoreRepository.save(fornitoreModificare);
+        }
+
     }
 
-    public void cancella(Long fornitoreId){
+    public void cancella(Long fornitoreId) {
         fornitoreRepository.deleteById(fornitoreId);
     }
 }

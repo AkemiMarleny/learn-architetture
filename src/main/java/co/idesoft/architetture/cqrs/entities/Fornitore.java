@@ -44,5 +44,6 @@ public class Fornitore {
     public void aggiornaCon(AggiornareFornitoreCommand command) {
         this.nome = command.nome();
         this.descrizione = command.descrizione();
+        this.checksum = Sum.fromContent(command.nome().trim().toLowerCase());
     }
 }

@@ -34,29 +34,32 @@ public class FornitoreWriterController {
         log.info("creando un nuovo fornitore con request: {}, request");
 
         try {
-           Long fornitoreId = fornitoreService.save(
+            Long fornitoreId = fornitoreService.save(
                     new CreareFornitoreCommand(request.nome(), request.descrizione()));
-                    return new ResponseEntity<>(new FornitoreCreatoDto(fornitoreId), HttpStatus.CREATED);
+            return new ResponseEntity<>(new FornitoreCreatoDto(fornitoreId), HttpStatus.CREATED);
         } catch (ConflictException e) {
-           return new ResponseEntity<>(HttpStatus.CONFLICT);
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
 
     }
 
     @PutMapping("{fornitoreId}")
-    public ResponseEntity<Void> updateFornitore(@PathVariable Long fornitoreId, 
-    @RequestBody AggiotnareFornitoreDto request){
+    public ResponseEntity<Void> updateFornitore(@PathVariable Long fornitoreId,
+            @RequestBody AggiotnareFornitoreDto request) {
+
         try {
-            fornitoreService.update(fornitoreId, 
-                new AggiornareFornitoreCommand(request.nome(), request.descrizione()));
+            fornitoreService.update(fornitoreId,
+                    new AggiornareFornitoreCommand(request.nome(), request.descrizione()));
+        } catch (ConflictException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RecordNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    } 
+    }
 
     @DeleteMapping("{fornitoreId}")
-    public ResponseEntity<Void> cancellaFornitore(@PathVariable Long fornitoreId){
+    public ResponseEntity<Void> cancellaFornitore(@PathVariable Long fornitoreId) {
         fornitoreService.cancella(fornitoreId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

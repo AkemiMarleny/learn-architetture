@@ -36,9 +36,9 @@ public class FornitoreReaderController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<FornitoreItemDto>> getAllFornitore(Pageable pageable){
-        Page<FornitoreItemDto> fornitoriPage = fornitoreRepository.findAll(pageable)
-            .map(FornitoreItemDto::fromEntity);
+    public ResponseEntity<Page<FornitoreItemDto>> getAllFornitore(Pageable pageable, String q) {
+        Page<FornitoreItemDto> fornitoriPage = fornitoreRepository.findByNomeContaining(pageable, q)
+                .map(FornitoreItemDto::fromEntity);
         return ResponseEntity.ok(fornitoriPage);
     }
 }
