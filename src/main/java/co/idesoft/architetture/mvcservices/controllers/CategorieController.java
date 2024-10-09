@@ -70,6 +70,8 @@ public class CategorieController {
             @RequestBody AggiornareCategoriaDto request) {
         try {
             categoriaService.update(categoriaId, request);
+        } catch (ConflictException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RecordNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

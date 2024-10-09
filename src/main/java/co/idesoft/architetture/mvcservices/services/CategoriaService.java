@@ -1,5 +1,7 @@
 package co.idesoft.architetture.mvcservices.services;
 
+import java.util.Arrays;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -41,11 +43,20 @@ public class CategoriaService {
                 .orElseThrow(RecordNotFoundException::new);
     }
 
-    public void update(Long categoriaId, @Valid AggiornareCategoriaDto payload) throws RecordNotFoundException {
+    public void update(Long categoriaId, @Valid AggiornareCategoriaDto payload)
+            throws RecordNotFoundException, ConflictException {
+
         Categoria categoria = categoriaRepository.findById(categoriaId)
                 .orElseThrow(RecordNotFoundException::new);
 
         categoria.aggiornaCon(payload);
+
+        Long categorieContatore = categoriaRepository.countByChecksumAndCategoriaIdNotIn(categoria.getChecksum(),
+                Arrays.asList(categoriaId));
+
+        if (categorieContatore > 0) {
+            throw new ConflictException();
+        }
 
         categoriaRepository.save(categoria);
     }

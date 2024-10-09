@@ -41,5 +41,6 @@ public class Categoria {
     public void aggiornaCon(AggiornareCategoriaDto request) {
         this.nome = request.nome();
         this.descrizione = request.descrizione();
+        this.checksum = Sum.fromContent(request.nome().trim().toLowerCase());
     }
 }
