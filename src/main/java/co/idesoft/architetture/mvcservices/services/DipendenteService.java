@@ -1,5 +1,7 @@
 package co.idesoft.architetture.mvcservices.services;
 
+import java.util.Arrays;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,11 +42,20 @@ public class DipendenteService {
                 .orElseThrow(RecordNotFoundException::new);
     }
 
-    public void update(Long dipendentiId, @Valid AggiornareDipendenteDto payload) throws RecordNotFoundException {
+    public void update(Long dipendentiId, @Valid AggiornareDipendenteDto payload)
+            throws RecordNotFoundException, ConflictException {
+
         Dipendente dipendente = dipendenteRepository.findById(dipendentiId)
                 .orElseThrow(RecordNotFoundException::new);
 
         dipendente.aggiornaCon(payload);
+
+        Long dipendentiContatore = dipendenteRepository.countByChecksumAndDipendenteIdNotIn(dipendente.getChecksum(),
+                Arrays.asList(dipendentiId));
+
+        if (dipendentiContatore > 0) {
+            throw new ConflictException();
+        }
 
         dipendenteRepository.save(dipendente);
     }

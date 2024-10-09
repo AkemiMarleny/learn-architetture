@@ -66,10 +66,14 @@ public class DipendenteController {
 
     @PutMapping("{dipendentiId}")
     public ResponseEntity<Void> updateDipendente(@PathVariable Long dipendentiId,
-            @RequestBody AggiornareDipendenteDto request) {
+            @RequestBody AggiornareDipendenteDto request) throws ConflictException {
         try {
             dipendenteService.update(dipendentiId, request);
-        } catch (RecordNotFoundException e) {
+        } catch (ConflictException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+
+        catch (RecordNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

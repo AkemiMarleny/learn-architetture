@@ -26,7 +26,7 @@ public class Dipendente {
     private String descrizione;
 
     @Column(length = 50)
-    private String checksum;  
+    private String checksum;
 
     public static Dipendente from(CreareDipendenteDto request) {
         Dipendente dipendente = new Dipendente();
@@ -40,5 +40,6 @@ public class Dipendente {
     public void aggiornaCon(AggiornareDipendenteDto request) {
         this.nome = request.nome();
         this.descrizione = request.descrizione();
+        this.checksum = Sum.fromContent(request.nome().trim().toLowerCase());
     }
 }
