@@ -71,6 +71,8 @@ public class MagazzinoController {
             @RequestBody AggiornareMagazzinoDto request) {
         try {
             magazzinoService.update(magazzinoId, request);
+        } catch (ConflictException e) {
+            return new ResponseEntity<>(HttpStatus.CONFLICT);
         } catch (RecordNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

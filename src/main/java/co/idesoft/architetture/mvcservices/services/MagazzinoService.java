@@ -1,5 +1,6 @@
 package co.idesoft.architetture.mvcservices.services;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -43,13 +44,34 @@ public class MagazzinoService {
         return magazzinoRepository.findById(magazzinoId);
     }
 
-    public void update(Long magazzinoId, @Valid AggiornareMagazzinoDto payload) throws RecordNotFoundException {
-        Magazzino magazzino = magazzinoRepository.findById(magazzinoId)
-                .orElseThrow(RecordNotFoundException::new);
+    public void update(Long magazzinoId, @Valid AggiornareMagazzinoDto payload)
+            throws RecordNotFoundException, ConflictException {
 
-        magazzino.aggiornaCon(payload);
+        // Magazzino magazzino = magazzinoRepository.findById(magazzinoId)
+        // .orElseThrow(RecordNotFoundException::new);
+        // magazzino.aggiornaCon(payload);
+        // magazzinoRepository.save(magazzino);
 
-        magazzinoRepository.save(magazzino);
+        Optional<Magazzino> magazzini = magazzinoRepository.findById(magazzinoId);
+
+        if (magazzini.isPresent()) {
+            Magazzino magazzinoModificare = magazzini.get();
+
+            magazzinoModificare.aggiornaCon(payload);
+
+            Long magazziniContatore = magazzinoRepository
+                    .countByChecksumAndMagazzinoIdNotIn(magazzinoModificare.getChecksum(), Arrays.asList(magazzinoId));
+
+            if (magazziniContatore > 0) {
+                throw new ConflictException();
+            }
+
+            magazzinoRepository.save(magazzinoModificare);
+        }
+
+        else {
+            throw new RecordNotFoundException();
+        }
     }
 
     public void cancella(Long magazzinoId) {

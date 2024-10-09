@@ -26,7 +26,7 @@ public class Magazzino {
     private String descrizione;
 
     @Column(length = 50)
-    private String checksum; 
+    private String checksum;
 
     public static Magazzino from(CreareMagazzinoDto request) {
         Magazzino magazzino = new Magazzino();
@@ -41,5 +41,6 @@ public class Magazzino {
     public void aggiornaCon(AggiornareMagazzinoDto request) {
         this.nome = request.nome();
         this.descrizione = request.descrizione();
+        this.checksum = Sum.fromContent(request.nome().trim().toLowerCase());
     }
 }
