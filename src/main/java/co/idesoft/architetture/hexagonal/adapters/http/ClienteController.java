@@ -73,9 +73,10 @@ public class ClienteController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<ClienteItemDto>> getAllCliente(Pageable pageable) {
+    public ResponseEntity<Page<ClienteItemDto>> getAllCliente(Pageable pageable, String q) {
+
         Page<ClienteItemDto> clientiPage = findAllClientiUseCase
-                .findAllClienti(PageableFactory.from(pageable))
+                .findAllClienti(PageableFactory.from(pageable), q)
                 .map(ClienteItemDto::from);
 
         return new ResponseEntity<>(clientiPage, HttpStatus.OK);

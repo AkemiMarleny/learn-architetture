@@ -11,12 +11,12 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class FindAllClientiUseCaseImpl implements FindAllClientiUseCase{
-    private final ClienteRepository clienteRepository;
+public class FindAllClientiUseCaseImpl implements FindAllClientiUseCase {
+  private final ClienteRepository clienteRepository;
 
-    @Override
-    public Page<ClienteItem> findAllClienti(Pagination pagination) {
-      return clienteRepository.findAll(pagination);
-    }
-    
+  @Override
+  public Page<ClienteItem> findAllClienti(Pagination pagination, String query) {
+    return clienteRepository.findAll(pagination, query);
+  }
+
 }

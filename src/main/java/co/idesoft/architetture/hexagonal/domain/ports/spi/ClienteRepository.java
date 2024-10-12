@@ -19,7 +19,7 @@ public interface ClienteRepository {
 
     Optional<ClienteDettaglio> findById(Long clienteId);
 
-    Page<ClienteItem> findAll(Pagination pagination);
+    Page<ClienteItem> findAll(Pagination pagination, String query);
 
     void update(SalvaAggiornamentoCliente payload) throws RecordNotFoundException;
 

@@ -21,6 +21,8 @@ public class ClienteFactory {
         return new ClienteItem(
                 cliente.getId(),
                 cliente.getNome(),
+                cliente.getCognomePaterno(),
+                cliente.getCognomeMaterno(),
                 cliente.getDescrizione());
     }
 }

@@ -42,9 +42,11 @@ public class ClienteRepositoryImpl implements ClienteRepository {
     }
 
     @Override
-    public Page<ClienteItem> findAll(Pagination pagination) {
-        return PageableFactory.from(jpaClienteRepository.findByDataEliminazioneIsNull(PageableFactory.from(pagination))
-                .map(ClienteFactory::clienteItemFrom));
+    public Page<ClienteItem> findAll(Pagination pagination, String query) {
+        return PageableFactory
+                .from(jpaClienteRepository
+                        .findByNomeContainingAndDataEliminazioneIsNull(PageableFactory.from(pagination), query)
+                        .map(ClienteFactory::clienteItemFrom));
     }
 
     @Override

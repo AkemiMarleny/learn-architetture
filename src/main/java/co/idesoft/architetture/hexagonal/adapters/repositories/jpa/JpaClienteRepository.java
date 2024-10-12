@@ -17,5 +17,5 @@ public interface JpaClienteRepository extends JpaRepository<Cliente, Long> {
 
     Optional<Cliente> findByIdAndDataEliminazioneIsNull(Long id);
 
-    Page<Cliente> findByDataEliminazioneIsNull(Pageable pageable);
+    Page<Cliente> findByNomeContainingAndDataEliminazioneIsNull(Pageable pageable, String query);
 }
