@@ -49,7 +49,11 @@ public class ClienteController {
 
         try {
             Long clienteId = creareClienteUseCase.creareCliente(
-                    new CreareCliente(request.nome(), request.descrizione()));
+                    new CreareCliente(
+                            request.nome(),
+                            request.cognomePaterno(),
+                            request.cognomeMaterno(),
+                            request.descrizione()));
             return new ResponseEntity<>(new ClienteCreatoDto(clienteId), HttpStatus.CREATED);
         } catch (ConflictException e) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);

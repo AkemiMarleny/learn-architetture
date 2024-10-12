@@ -23,16 +23,18 @@ public class CreareClienteUseCaseImpl implements CreareClienteUseCase {
     public Long creareCliente(@Valid CreareCliente payload) throws ConflictException {
         ClienteChecksum clienteChecksum = new ClienteChecksum(payload.nome());
 
-        Long clientiContatore = clienteRepository.countByChecksum(clienteChecksum.get());    
+        Long clientiContatore = clienteRepository.countByChecksum(clienteChecksum.get());
 
-        if(clientiContatore > 0){
+        if (clientiContatore > 0) {
             throw new ConflictException();
         }
 
         return clienteRepository.save(new SalvareCliente(
-            payload.nome(), 
-            payload.descrizione(),
-            clienteChecksum));
+                payload.nome(),
+                payload.cognomePaterno(),
+                payload.cognomeMaterno(),
+                payload.descrizione(),
+                clienteChecksum));
     }
 
 }

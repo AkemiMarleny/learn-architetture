@@ -22,6 +22,8 @@ public class Cliente {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nome;
+    private String cognomePaterno;
+    private String cognomeMaterno;
     private String descrizione;
 
     @Column(length = 50)
@@ -30,9 +32,12 @@ public class Cliente {
     private LocalDateTime dataEliminazione;
 
     public static Cliente from(SalvareCliente payload) {
+
         Cliente cliente = new Cliente();
 
         cliente.setNome(payload.nome());
+        cliente.setCognomePaterno(payload.cognomePaterno());
+        cliente.setCognomeMaterno(payload.cognomeMaterno());
         cliente.setDescrizione(payload.descrizione());
         cliente.setChecksum(payload.checksum().get());
 
