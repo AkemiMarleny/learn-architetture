@@ -63,6 +63,7 @@ public class ClienteController {
 
     @GetMapping("{clienteId}")
     public ResponseEntity<ClienteDettaglioDto> getDettaglioCliente(@PathVariable Long clienteId) {
+
         Optional<ClienteDettaglio> clienteDettaglioOpt = findClienteByIdUseCase.findClienteByid(clienteId);
         if (clienteDettaglioOpt.isPresent()) {
             return ResponseEntity.ok(ClienteDettaglioDto.from(clienteDettaglioOpt.get()));
