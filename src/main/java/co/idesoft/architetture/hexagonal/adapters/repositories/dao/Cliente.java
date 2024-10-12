@@ -45,7 +45,10 @@ public class Cliente {
     }
 
     public void aggiornaCon(SalvaAggiornamentoCliente payload) {
+
         this.nome = payload.nome();
+        this.cognomePaterno = payload.cognomePaterno();
+        this.cognomeMaterno = payload.cognomeMaterno();
         this.descrizione = payload.descrizione();
         this.checksum = payload.checksum().get();
     }

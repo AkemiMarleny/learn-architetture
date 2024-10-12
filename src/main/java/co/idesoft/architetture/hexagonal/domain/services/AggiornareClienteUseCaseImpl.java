@@ -45,6 +45,8 @@ public class AggiornareClienteUseCaseImpl implements AggiornareClienteUseCase {
         clienteRepository.update(new SalvaAggiornamentoCliente(
                 payload.id(),
                 payload.nome(),
+                payload.cognomePaterno(),
+                payload.cognomeMaterno(),
                 payload.descrizione(),
                 clienteChecksum));
     }

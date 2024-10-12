@@ -88,6 +88,8 @@ public class ClienteController {
             aggiornareClienteUseCase.aggiornaCliente(new AggiornareCliente(
                     clienteId,
                     request.nome(),
+                    request.cognomePaterno(),
+                    request.cognomeMaterno(),
                     request.descrizione()));
 
         } catch (ConflictException e) {
