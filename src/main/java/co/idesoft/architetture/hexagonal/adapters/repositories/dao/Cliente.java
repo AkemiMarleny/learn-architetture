@@ -1,17 +1,13 @@
 package co.idesoft.architetture.hexagonal.adapters.repositories.dao;
 
-import java.time.LocalDateTime;
-
 import co.idesoft.architetture.hexagonal.domain.valuables.SalvaAggiornamentoCliente;
 import co.idesoft.architetture.hexagonal.domain.valuables.SalvareCliente;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "clienti")
@@ -24,6 +20,7 @@ public class Cliente {
     private String nome;
     private String cognomePaterno;
     private String cognomeMaterno;
+    private LocalDate compleanno;
     private String descrizione;
 
     @Column(length = 50)
@@ -38,6 +35,7 @@ public class Cliente {
         cliente.setNome(payload.nome());
         cliente.setCognomePaterno(payload.cognomePaterno());
         cliente.setCognomeMaterno(payload.cognomeMaterno());
+        cliente.setCompleanno(payload.compleanno());
         cliente.setDescrizione(payload.descrizione());
         cliente.setChecksum(payload.checksum().get());
 

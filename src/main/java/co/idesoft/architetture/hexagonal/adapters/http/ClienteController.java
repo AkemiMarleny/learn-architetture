@@ -1,37 +1,21 @@
 package co.idesoft.architetture.hexagonal.adapters.http;
 
-import java.util.Optional;
-
-import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import co.idesoft.architetture.common.Page;
 import co.idesoft.architetture.common.factories.PageableFactory;
-import co.idesoft.architetture.hexagonal.adapters.http.dto.AggiornareClienteDto;
-import co.idesoft.architetture.hexagonal.adapters.http.dto.ClienteCreatoDto;
-import co.idesoft.architetture.hexagonal.adapters.http.dto.ClienteDettaglioDto;
-import co.idesoft.architetture.hexagonal.adapters.http.dto.ClienteItemDto;
-import co.idesoft.architetture.hexagonal.adapters.http.dto.CreareClienteDto;
-import co.idesoft.architetture.hexagonal.domain.ports.api.AggiornareClienteUseCase;
-import co.idesoft.architetture.hexagonal.domain.ports.api.CancellareClienteUseCase;
-import co.idesoft.architetture.hexagonal.domain.ports.api.CreareClienteUseCase;
-import co.idesoft.architetture.hexagonal.domain.ports.api.FindAllClientiUseCase;
-import co.idesoft.architetture.hexagonal.domain.ports.api.FindClienteByIdUseCase;
+import co.idesoft.architetture.hexagonal.adapters.http.dto.*;
+import co.idesoft.architetture.hexagonal.domain.ports.api.*;
 import co.idesoft.architetture.hexagonal.domain.valuables.AggiornareCliente;
 import co.idesoft.architetture.hexagonal.domain.valuables.ClienteDettaglio;
 import co.idesoft.architetture.hexagonal.domain.valuables.CreareCliente;
 import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Optional;
 
 @RequestMapping("api/clienti")
 @RestController
@@ -53,6 +37,7 @@ public class ClienteController {
                             request.nome(),
                             request.cognomePaterno(),
                             request.cognomeMaterno(),
+                            request.compleanno(),
                             request.descrizione()));
             return new ResponseEntity<>(new ClienteCreatoDto(clienteId), HttpStatus.CREATED);
         } catch (ConflictException e) {
