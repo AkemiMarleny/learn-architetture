@@ -5,5 +5,6 @@ public record ClienteDettaglio(
         String nome,
         String cognomePaterno,
         String cognomeMaterno,
-        String descrizione) {
+        String descrizione,
+        Long utenteId) {
 }

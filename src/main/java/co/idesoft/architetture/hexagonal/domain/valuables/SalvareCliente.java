@@ -8,6 +8,7 @@ public record SalvareCliente(
         String cognomeMaterno,
         LocalDate compleanno,
         String descrizione,
-        ClienteChecksum checksum) {
+        ClienteChecksum checksum,
+        Long utenteId) {
 
 }

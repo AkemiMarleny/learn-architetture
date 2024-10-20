@@ -13,14 +13,17 @@ import co.idesoft.architetture.hexagonal.domain.valueobjects.Nome;
 import co.idesoft.architetture.hexagonal.domain.valueobjects.UserPassword;
 import co.idesoft.architetture.hexagonal.domain.valueobjects.Username;
 import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 
+@Slf4j
 @Service
 @Validated
 @RequiredArgsConstructor
@@ -31,28 +34,20 @@ public class CreareClienteUseCaseImpl implements CreareClienteUseCase {
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional
     public Long creareCliente(@Valid CreareCliente payload) throws ConflictException {
 
-        ClienteChecksum clienteChecksum = new ClienteChecksum(payload.nome());
+        Nome nome = new Nome(payload.nome());
+        Cognome cognomePaterno = new Cognome(payload.cognomePaterno());
+        Cognome cognomeMaterno = new Cognome(payload.cognomeMaterno());
+
+        ClienteChecksum clienteChecksum = new ClienteChecksum(nome, cognomePaterno, cognomeMaterno);
 
         Long clientiContatore = clienteRepository.countByChecksum(clienteChecksum.get());
 
         if (clientiContatore > 0) {
             throw new ConflictException();
         }
-
-        Nome nome = new Nome(payload.nome());
-        Cognome cognomePaterno = new Cognome(payload.cognomePaterno());
-        Cognome cognomeMaterno = new Cognome(payload.cognomeMaterno());
-
-
-        Long clienteId = clienteRepository.save(new SalvareCliente(
-                nome.get(),
-                cognomePaterno.get(),
-                cognomeMaterno.get(),
-                payload.compleanno(),
-                payload.descrizione(),
-                clienteChecksum));
 
         Username username = new Username(
                 nome.get(),
@@ -61,19 +56,38 @@ public class CreareClienteUseCaseImpl implements CreareClienteUseCase {
                 payload.compleanno()
         );
 
+        Long utentiContatore = utenteRepository.countByUsername(username.get());
+
+        if (utentiContatore > 0) {
+            throw new ConflictException();
+        }
+
         UserPassword userPassword = new UserPassword(
                 passwordEncoder,
                 LocalDateTime.now().toString()
         );
 
-        utenteRepository.save(new SalvareUtente(
+        Long utenteId = utenteRepository.save(new SalvareUtente(
                 username.get(),
                 userPassword.get(),
-                UtenteStati.UNAUTHORIZED.getCodice(),
-                clienteId
+                UtenteStati.UNAUTHORIZED.getCodice()
         ));
 
-        return clienteId;
+        log.info("utente creato con id: {}", utenteId);
+
+        Long clienteId = clienteRepository.save(new SalvareCliente(
+                nome.get(),
+                cognomePaterno.get(),
+                cognomeMaterno.get(),
+                payload.compleanno(),
+                payload.descrizione(),
+                clienteChecksum,
+                utenteId
+        ));
+
+        log.info("cliente creato con id: {}", clienteId);
+
+        return utenteId;
     }
 
 }

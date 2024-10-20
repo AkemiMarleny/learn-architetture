@@ -28,6 +28,13 @@ public class Cliente {
 
     private LocalDateTime dataEliminazione;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "utente_id", insertable = false, updatable = false)
+    private Utente utente;
+
+    @Column(name = "utente_id", nullable = false)
+    private Long utenteId;
+
     public static Cliente from(SalvareCliente payload) {
 
         Cliente cliente = new Cliente();
@@ -38,6 +45,7 @@ public class Cliente {
         cliente.setCompleanno(payload.compleanno());
         cliente.setDescrizione(payload.descrizione());
         cliente.setChecksum(payload.checksum().get());
+        cliente.setUtenteId(payload.utenteId());
 
         return cliente;
     }

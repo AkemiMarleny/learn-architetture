@@ -9,6 +9,7 @@ import co.idesoft.architetture.hexagonal.domain.valuables.ClienteDettaglio;
 import co.idesoft.architetture.hexagonal.domain.valuables.CreareCliente;
 import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class ClienteController {
     private final CancellareClienteUseCase cancellareClienteUseCase;
 
     @PostMapping
+    @Transactional
     public ResponseEntity<ClienteCreatoDto> creareCliente(@RequestBody CreareClienteDto request) {
 
         try {
@@ -68,6 +70,7 @@ public class ClienteController {
     }
 
     @PutMapping("{clienteId}")
+    @Transactional
     public ResponseEntity<Void> updateCliente(@PathVariable Long clienteId, @RequestBody AggiornareClienteDto request) {
         try {
             aggiornareClienteUseCase.aggiornaCliente(new AggiornareCliente(
@@ -75,6 +78,7 @@ public class ClienteController {
                     request.nome(),
                     request.cognomePaterno(),
                     request.cognomeMaterno(),
+                    request.compleanno(),
                     request.descrizione()));
 
         } catch (ConflictException e) {

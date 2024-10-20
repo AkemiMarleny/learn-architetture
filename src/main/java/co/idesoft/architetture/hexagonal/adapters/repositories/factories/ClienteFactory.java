@@ -14,7 +14,8 @@ public class ClienteFactory {
                 cliente.getNome(),
                 cliente.getCognomePaterno(),
                 cliente.getCognomeMaterno(),
-                cliente.getDescrizione());
+                cliente.getDescrizione(),
+                cliente.getUtenteId());
     }
 
     public static ClienteItem clienteItemFrom(Cliente cliente) {
