@@ -1,32 +1,21 @@
 package co.idesoft.architetture.mvc.controllers;
 
-import java.util.Arrays;
-import java.util.Optional;
-
+import co.idesoft.architetture.mvc.controllers.dto.*;
+import co.idesoft.architetture.mvc.entities.Prodotto;
+import co.idesoft.architetture.mvc.entities.UnitaMisura;
+import co.idesoft.architetture.mvc.repositories.ProdottoRepository;
+import co.idesoft.architetture.mvc.repositories.UnitaMisuraRepository;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import co.idesoft.architetture.mvc.controllers.dto.AggiornareProdottoDto;
-import co.idesoft.architetture.mvc.controllers.dto.CreareProdottoDto;
-import co.idesoft.architetture.mvc.controllers.dto.ProdottoCreatoDto;
-import co.idesoft.architetture.mvc.controllers.dto.ProdottoDettaglioDto;
-import co.idesoft.architetture.mvc.controllers.dto.ProdottoItemDto;
-import co.idesoft.architetture.mvc.entities.Prodotto;
-import co.idesoft.architetture.mvc.repositories.ProdottoRepository;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import java.util.Arrays;
+import java.util.Optional;
 
 @RequestMapping("api/prodotti")
 @RestController
@@ -35,6 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 public class ProdottoController {
 
     private final ProdottoRepository prodottoRepository;
+    private final UnitaMisuraRepository unitaMisuraRepository;
 
     @GetMapping
     public ResponseEntity<Page<ProdottoItemDto>> getAllProdotti(Pageable pageable, @RequestParam String q) {
@@ -81,7 +71,7 @@ public class ProdottoController {
 
     @PutMapping("{prodottoId}")
     public ResponseEntity<Void> updateProdotto(@PathVariable Long prodottoId,
-                                               @RequestBody AggiornareProdottoDto request) {
+                                               @Valid @RequestBody AggiornareProdottoDto request) {
         log.info("aggiornando il prodotto con id: {}", prodottoId);
 
         Optional<Prodotto> prodotto = prodottoRepository.findById(prodottoId);
@@ -97,6 +87,12 @@ public class ProdottoController {
 
             if (prodottiContatore > 0) {
                 return new ResponseEntity<>(HttpStatus.CONFLICT);
+            }
+
+            Optional<UnitaMisura> unitaMisuraOpt = unitaMisuraRepository.findById(request.unitaMisuraId());
+
+            if (unitaMisuraOpt.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
             }
 
             prodottoRepository.save(prodottoAModificare);
