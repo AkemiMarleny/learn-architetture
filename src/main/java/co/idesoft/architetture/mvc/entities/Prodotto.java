@@ -1,18 +1,12 @@
 package co.idesoft.architetture.mvc.entities;
 
-import org.hibernate.annotations.SoftDelete;
-
 import co.idesoft.architetture.common.Sum;
 import co.idesoft.architetture.mvc.controllers.dto.AggiornareProdottoDto;
 import co.idesoft.architetture.mvc.controllers.dto.CreareProdottoDto;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.SoftDelete;
 
 @Entity
 @Table(name = "prodotti")
@@ -26,6 +20,13 @@ public class Prodotto {
 
     private String nome;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "unita_misura_id", insertable = false, updatable = false)
+    private UnitaMisura unitaMisura;
+
+    @Column(name = "unita_misura_id", nullable = false)
+    private Long unitaMisuraId;
+
     private String descrizione;
 
     @Column(length = 50)
@@ -35,6 +36,7 @@ public class Prodotto {
         Prodotto prodotto = new Prodotto();
 
         prodotto.setNome(request.nome());
+        prodotto.setUnitaMisuraId(request.unitaMisuraId());
         prodotto.setDescrizione(request.descrizione());
         prodotto.setChecksum(Sum.fromContent(request.nome().trim().toLowerCase()));
 

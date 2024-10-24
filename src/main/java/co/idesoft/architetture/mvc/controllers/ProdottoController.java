@@ -81,7 +81,7 @@ public class ProdottoController {
 
     @PutMapping("{prodottoId}")
     public ResponseEntity<Void> updateProdotto(@PathVariable Long prodottoId,
-            @RequestBody AggiornareProdottoDto request) {
+                                               @RequestBody AggiornareProdottoDto request) {
         log.info("aggiornando il prodotto con id: {}", prodottoId);
 
         Optional<Prodotto> prodotto = prodottoRepository.findById(prodottoId);
