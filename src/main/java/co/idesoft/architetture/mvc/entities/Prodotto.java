@@ -45,6 +45,7 @@ public class Prodotto {
 
     public void aggiornaCon(AggiornareProdottoDto request) {
         this.nome = request.nome();
+        this.unitaMisuraId = request.unitaMisuraId();
         this.descrizione = request.descrizione();
         this.checksum = Sum.fromContent(request.nome().trim().toLowerCase());
     }
