@@ -29,6 +29,8 @@ public class Prodotto {
 
     private String descrizione;
 
+    private Long stockTotale;
+
     @Column(length = 50)
     private String checksum;
 
@@ -48,5 +50,9 @@ public class Prodotto {
         this.unitaMisuraId = request.unitaMisuraId();
         this.descrizione = request.descrizione();
         this.checksum = Sum.fromContent(request.nome().trim().toLowerCase());
+    }
+
+    public void aggiornaCon(Long stockTotale) {
+        this.stockTotale = stockTotale;
     }
 }

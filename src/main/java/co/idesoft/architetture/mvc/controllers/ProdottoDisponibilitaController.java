@@ -26,7 +26,9 @@ public class ProdottoDisponibilitaController {
     private final WarehouseRepository warehouseRepository;
 
     @PostMapping
-    public ResponseEntity<ProdottiDisponibilitaCreatoDto> creareDisponibilitaProdotto(@Valid @RequestBody CreareProdottoDisponibilitaDto request, @PathVariable Long prodottoId) {
+    public ResponseEntity<ProdottiDisponibilitaCreatoDto> creareDisponibilitaProdotto(
+            @Valid @RequestBody CreareProdottoDisponibilitaDto request,
+            @PathVariable Long prodottoId) {
 
         ProdottoDisponibilita prodottoDisponibilita = ProdottoDisponibilita.from(request, prodottoId);
 
@@ -43,6 +45,14 @@ public class ProdottoDisponibilitaController {
         }
 
         Long prodottoDisponibilitaId = prodottoDisponibilitaRepository.save(prodottoDisponibilita).getId();
+
+        Long stockTotale = prodottoDisponibilitaRepository.sumQuantitaByProdottoId(prodottoId);
+        // Prodotto prodotto = prodottoOpt.get();
+        // prodotto.setStockTotale(stockTotale);
+        // prodottoRepository.save(prodotto);
+
+        prodottoOpt.get().aggiornaCon(stockTotale);
+        prodottoRepository.save(prodottoOpt.get());
 
         return new ResponseEntity<>(new ProdottiDisponibilitaCreatoDto(prodottoDisponibilitaId), HttpStatus.CREATED);
     }
