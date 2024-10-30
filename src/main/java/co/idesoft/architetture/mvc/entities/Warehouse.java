@@ -16,7 +16,7 @@ public class Warehouse {
 
     private String nome;
 
-    private String descrizone;
+    private String descrizione;
 
     private String checksum;
 }

@@ -1,5 +1,6 @@
 package co.idesoft.architetture.mvc.controllers;
 
+import co.idesoft.architetture.mvc.entities.VWarehouse;
 import co.idesoft.architetture.mvc.entities.Warehouse;
 import co.idesoft.architetture.mvc.repositories.ProdottoDisponibilitaRepository;
 import co.idesoft.architetture.mvc.repositories.WarehouseRepository;
@@ -7,11 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequestMapping("api/warehouses")
@@ -22,6 +21,14 @@ public class WarehouseController {
 
     private final WarehouseRepository warehouseRepository;
     private final ProdottoDisponibilitaRepository prodottoDisponibilitaRepository;
+
+    @GetMapping
+    public ResponseEntity<List<VWarehouse>> getAllWarehouses() {
+
+        List<VWarehouse> vWarehouseList = warehouseRepository.findAllWithTotals();
+
+        return ResponseEntity.ok(vWarehouseList);
+    }
 
     //@Transactional
     @DeleteMapping("{warehouseId}")
