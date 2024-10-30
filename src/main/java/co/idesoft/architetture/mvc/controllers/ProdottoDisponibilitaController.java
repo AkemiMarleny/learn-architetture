@@ -46,6 +46,8 @@ public class ProdottoDisponibilitaController {
 
         Long prodottoDisponibilitaId = prodottoDisponibilitaRepository.save(prodottoDisponibilita).getId();
 
+        //este metodo sumQuantitaByProdottoId(prodottoId) va a sumar todos los productos de una misma categoria
+        //que existan en diferentes almacenes y el monto total (stockTotale) se almacenará en la tabla (Producto)
         Long stockTotale = prodottoDisponibilitaRepository.sumQuantitaByProdottoId(prodottoId);
         // Prodotto prodotto = prodottoOpt.get();
         // prodotto.setStockTotale(stockTotale);
