@@ -2,7 +2,9 @@ package co.idesoft.architetture.mvc.controllers;
 
 import co.idesoft.architetture.mvc.controllers.dto.*;
 import co.idesoft.architetture.mvc.entities.Prodotto;
+import co.idesoft.architetture.mvc.entities.ProdottoLogs;
 import co.idesoft.architetture.mvc.entities.UnitaMisura;
+import co.idesoft.architetture.mvc.repositories.ProdottoLogsRepository;
 import co.idesoft.architetture.mvc.repositories.ProdottoRepository;
 import co.idesoft.architetture.mvc.repositories.UnitaMisuraRepository;
 import jakarta.validation.Valid;
@@ -25,6 +27,7 @@ public class ProdottoController {
 
     private final ProdottoRepository prodottoRepository;
     private final UnitaMisuraRepository unitaMisuraRepository;
+    private final ProdottoLogsRepository prodottoLogsRepository;
 
     @GetMapping
     public ResponseEntity<Page<ProdottoItemDto>> getAllProdotti(Pageable pageable, @RequestParam String q) {
@@ -77,7 +80,14 @@ public class ProdottoController {
         Optional<Prodotto> prodotto = prodottoRepository.findById(prodottoId);
 
         if (prodotto.isPresent()) {
+
             Prodotto prodottoAModificare = prodotto.get();
+//          ProdottoLogs prodottoLogs = new ProdottoLogs();
+//          prodottoLogs.setNome(prodottoAModificare.getNome());
+
+            ProdottoLogs prodottoLogs = ProdottoLogs.from(prodottoAModificare);
+
+            prodottoLogsRepository.save(prodottoLogs);
 
             prodottoAModificare.aggiornaCon(request);
 
