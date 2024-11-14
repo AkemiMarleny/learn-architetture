@@ -14,4 +14,7 @@ public interface ProdottoDisponibilitaRepository extends JpaRepository<ProdottoD
     Long countByWarehouseId(Long warehouseId);
 
     Optional<ProdottoDisponibilita> findFirstByProdottoIdAndQuantitaGreaterThanEqual(Long prodottoId, Long quantita);
+
+    Optional<ProdottoDisponibilita> findByIdAndProdottoId(Long id, Long prodottoId);
+    
 }
