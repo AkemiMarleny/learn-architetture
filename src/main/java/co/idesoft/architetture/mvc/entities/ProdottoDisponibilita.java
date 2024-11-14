@@ -1,5 +1,6 @@
 package co.idesoft.architetture.mvc.entities;
 
+import co.idesoft.architetture.mvc.controllers.dto.AggiornareProdottoDisponibilitaDto;
 import co.idesoft.architetture.mvc.controllers.dto.CreareProdottoDisponibilitaDto;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -40,5 +41,10 @@ public class ProdottoDisponibilita {
         prodottoDisponibilita.setWarehouseId(request.warehouseId());
 
         return prodottoDisponibilita;
+    }
+
+    public void aggiornaCon(AggiornareProdottoDisponibilitaDto request) {
+        this.quantita = request.quantita();
+        this.warehouseId = request.warehouseId();
     }
 }

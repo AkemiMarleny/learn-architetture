@@ -1,10 +1,13 @@
 package co.idesoft.architetture.mvc.controllers;
 
+import co.idesoft.architetture.mvc.controllers.dto.AggiornareProdottoDisponibilitaDto;
 import co.idesoft.architetture.mvc.controllers.dto.CreareProdottoDisponibilitaDto;
 import co.idesoft.architetture.mvc.controllers.dto.ProdottiDisponibilitaCreatoDto;
 import co.idesoft.architetture.mvc.entities.Prodotto;
 import co.idesoft.architetture.mvc.entities.ProdottoDisponibilita;
+import co.idesoft.architetture.mvc.entities.ProdottoDisponibilitaLogs;
 import co.idesoft.architetture.mvc.entities.Warehouse;
+import co.idesoft.architetture.mvc.repositories.ProdottoDisponibilitaLogsRepository;
 import co.idesoft.architetture.mvc.repositories.ProdottoDisponibilitaRepository;
 import co.idesoft.architetture.mvc.repositories.ProdottoRepository;
 import co.idesoft.architetture.mvc.repositories.WarehouseRepository;
@@ -25,7 +28,8 @@ public class ProdottoDisponibilitaController {
     private final ProdottoDisponibilitaRepository prodottoDisponibilitaRepository;
     private final ProdottoRepository prodottoRepository;
     private final WarehouseRepository warehouseRepository;
-    private final ReentrantLock reentrantLock;
+    private final ReentrantLock reentrantLock = new ReentrantLock();
+    private final ProdottoDisponibilitaLogsRepository prodottoDisponibilitaLogsRepository;
 
     @PostMapping
     public ResponseEntity<ProdottiDisponibilitaCreatoDto> creareDisponibilitaProdotto(
@@ -65,6 +69,36 @@ public class ProdottoDisponibilitaController {
         } finally {
             reentrantLock.unlock();
         }
+    }
+
+    @PutMapping("{prodottoDisponibilitaId}")
+    public ResponseEntity<Void> updateProdottoDisponibilita(@PathVariable Long prodottoId, @PathVariable Long prodottoDisponibilitaId,
+                                                            @Valid @RequestBody AggiornareProdottoDisponibilitaDto request) {
+
+        Optional<Prodotto> prodottoOpt = prodottoRepository.findById(prodottoId);
+        if (prodottoOpt.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        Optional<ProdottoDisponibilita> prodottoDisponibilitaOpt = prodottoDisponibilitaRepository.findByIdAndProdottoId(prodottoDisponibilitaId, prodottoId);
+        if (prodottoDisponibilitaOpt.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        ProdottoDisponibilita prodottoDisponibilitaAModificare = prodottoDisponibilitaOpt.get();
+
+        ProdottoDisponibilitaLogs prodottoDisponibilitaLogs = ProdottoDisponibilitaLogs.from(prodottoDisponibilitaAModificare);
+        prodottoDisponibilitaLogsRepository.save(prodottoDisponibilitaLogs);
+
+        prodottoDisponibilitaAModificare.aggiornaCon(request);
+
+        Optional<Warehouse> warehouseOpt = warehouseRepository.findById(request.warehouseId());
+        if (warehouseOpt.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        prodottoDisponibilitaRepository.save(prodottoDisponibilitaAModificare);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
