@@ -1,13 +1,5 @@
 package co.idesoft.architetture.mvcservices.services;
 
-import java.util.Arrays;
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareCassaDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareCassaDto;
 import co.idesoft.architetture.mvcservices.entities.Cassa;
@@ -16,6 +8,13 @@ import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.repositories.CassaRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,7 +32,7 @@ public class CassaService {
             throw new ConflictException();
         }
 
-        return cassaRepository.save(Cassa.from(payload)).getCassaId();
+        return cassaRepository.save(cassa).getCassaId();
     }
 
     public Page<Cassa> findAll(Pageable pageable, String query) {
@@ -66,9 +65,7 @@ public class CassaService {
             }
 
             cassaRepository.save(cassaModificare);
-        }
-
-        else {
+        } else {
             throw new RecordNotFoundException();
         }
     }
