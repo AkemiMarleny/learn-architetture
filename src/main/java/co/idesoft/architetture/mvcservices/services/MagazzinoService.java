@@ -1,13 +1,5 @@
 package co.idesoft.architetture.mvcservices.services;
 
-import java.util.Arrays;
-import java.util.Optional;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareMagazzinoDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareMagazzinoDto;
 import co.idesoft.architetture.mvcservices.entities.Magazzino;
@@ -16,6 +8,13 @@ import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.repositories.MagazzinoRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,7 +36,7 @@ public class MagazzinoService {
             throw new ConflictException();
         }
 
-        return magazzinoRepository.save(Magazzino.from(payload)).getMagazzinoId();
+        return magazzinoRepository.save(magazzino).getMagazzinoId();
     }
 
     public Optional<Magazzino> findDettaglio(Long magazzinoId) {
@@ -67,9 +66,7 @@ public class MagazzinoService {
             }
 
             magazzinoRepository.save(magazzinoModificare);
-        }
-
-        else {
+        } else {
             throw new RecordNotFoundException();
         }
     }
