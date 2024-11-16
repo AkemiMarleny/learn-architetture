@@ -1,12 +1,5 @@
 package co.idesoft.architetture.mvcservices.services;
 
-import java.util.Arrays;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareCategoriaDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareCategoriaDto;
 import co.idesoft.architetture.mvcservices.entities.Categoria;
@@ -15,6 +8,12 @@ import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.repositories.CategoriaRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class CategoriaService {
         if (categorieContatore > 0) {
             throw new ConflictException();
         }
-        return categoriaRepository.save(Categoria.from(payload)).getCategoriaId();
+        return categoriaRepository.save(categoria).getCategoriaId();
     }
 
     public Page<Categoria> findAll(Pageable pageable, String query) {
