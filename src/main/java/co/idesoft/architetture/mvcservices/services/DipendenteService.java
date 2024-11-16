@@ -1,12 +1,5 @@
 package co.idesoft.architetture.mvcservices.services;
 
-import java.util.Arrays;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import co.idesoft.architetture.mvcservices.controllers.dto.AggiornareDipendenteDto;
 import co.idesoft.architetture.mvcservices.controllers.dto.CreareDipendenteDto;
 import co.idesoft.architetture.mvcservices.entities.Dipendente;
@@ -15,6 +8,12 @@ import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import co.idesoft.architetture.mvcservices.repositories.DipendenteRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Arrays;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +29,7 @@ public class DipendenteService {
         if (dipendentiContatore > 0) {
             throw new ConflictException();
         }
-        return dipendenteRepository.save(Dipendente.from(payload)).getDipendenteId();
+        return dipendenteRepository.save(dipendente).getDipendenteId();
     }
 
     public Page<Dipendente> findAll(Pageable pageable, String query) {
