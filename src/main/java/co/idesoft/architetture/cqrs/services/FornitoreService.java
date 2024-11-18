@@ -1,11 +1,5 @@
 package co.idesoft.architetture.cqrs.services;
 
-import java.util.Arrays;
-import java.util.Optional;
-
-import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
-
 import co.idesoft.architetture.cqrs.commands.AggiornareFornitoreCommand;
 import co.idesoft.architetture.cqrs.commands.CreareFornitoreCommand;
 import co.idesoft.architetture.cqrs.entities.Fornitore;
@@ -14,6 +8,11 @@ import co.idesoft.architetture.mvcservices.exceptions.ConflictException;
 import co.idesoft.architetture.mvcservices.exceptions.RecordNotFoundException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
+
+import java.util.Arrays;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -31,7 +30,7 @@ public class FornitoreService {
             throw new ConflictException();
         }
 
-        return fornitoreRepository.save(Fornitore.from(command)).getId();
+        return fornitoreRepository.save(fornitore).getId();
     }
 
     public void update(Long fornitoreId, @Valid AggiornareFornitoreCommand command)
@@ -56,9 +55,7 @@ public class FornitoreService {
             }
 
             fornitoreRepository.save(fornitoreModificare);
-        }
-
-        else {
+        } else {
             throw new RecordNotFoundException();
         }
 
