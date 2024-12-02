@@ -25,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("api/fornitori")
 @RequiredArgsConstructor
 @Slf4j
-public class FornitoreWriterController {
+public class FornitoreScritturaController {
 
     private final FornitoreService fornitoreService;
 
