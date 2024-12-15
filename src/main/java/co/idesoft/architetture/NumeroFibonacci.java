@@ -13,12 +13,14 @@ public class NumeroFibonacci {
 
         while (a <= numero) {
             if (a == numero) {
+                // se la condizione è sodisfatta,
+                // il ciclo while si interrompe.
                 return true;
             }
 
-            int next = a + b;
+            int prossimo = a + b;
             a = b;
-            b = next;
+            b = prossimo;
         }
 
         return false;

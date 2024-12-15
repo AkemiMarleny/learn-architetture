@@ -6,10 +6,10 @@ services:
     ports:
       - "3306:3306"
     networks:
-      - jacalnet
+      - architetturanet
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=jacal_db
+      - MYSQL_DATABASE=architettura_db
 
 networks:
-  jacalnet:
+  architetturanet:
